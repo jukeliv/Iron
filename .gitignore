@@ -1,0 +1,5 @@
+Iron.vcxproj.filters
+Iron.vcxproj.user
+bin/
+bin-int/
+.vs/
