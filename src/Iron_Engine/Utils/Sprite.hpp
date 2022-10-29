@@ -47,8 +47,10 @@ public:
 	{
 		m_Width *= x;
 		m_Height *= x;
-		transform.x -= m_Width / 4;
-		transform.y -= m_Height / 4;
+		/*TODO: Figure out how to center this shit
+		transform.x -= pow(x,4);
+		transform.y -= pow(x,4);
+		*/
 	}
 public:
 	Transform transform;

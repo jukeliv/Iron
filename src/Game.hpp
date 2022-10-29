@@ -19,8 +19,10 @@ public:
 		:Text("res\\images\\text.png"),
 		music("res\\music\\FutureWave.wav", AudioData::IRON_MUSIC)
 	{
-		Text.transform.x = WINDOW_WIDTH / 2 - (Text.m_Width / 2);
-		Text.transform.y = WINDOW_HEIGHT / 2 - (Text.m_Height / 2) + 150;
+		Text.SetGraphicSize(1.5);
+
+		Text.ScreenCenter();
+		Text.transform.y += 150;
 
 		music.Play();
 	}
