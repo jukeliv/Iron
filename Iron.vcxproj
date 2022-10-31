@@ -208,7 +208,7 @@
     <ClInclude Include="src\Iron_Engine\Input.hpp" />
     <ClInclude Include="src\Iron_Engine\Sprite.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\AudioClip.hpp" />
-    <ClInclude Include="src\Iron_Engine\Utils\Input.hpp" />
+    <ClInclude Include="src\Iron_Engine\Input.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\Sprite.hpp" />
   </ItemGroup>
   <ItemGroup>

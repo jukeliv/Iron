@@ -31,19 +31,31 @@ public:
 		}
 	}
 
-	void Play(bool force = false)
+	void Play(bool loop,bool force = false)
 	{
 		if (m_Data == AudioData::IRON_MUSIC)
 		{
 			if (Mix_PlayingMusic() == 0 || force)
 			{
-				Mix_PlayMusic(m_MusicClip, -1);
+				Mix_PlayMusic(m_MusicClip, loop?-1:0);
 			}
 		}
 		else
 		{
-			Mix_PlayChannel(-1, m_AudioClip, 0);
+			Mix_PlayChannel(-1, m_AudioClip, loop?-1:0);
 		}
+	}
+
+	//The volume goes from 0.0 to 1.0
+	void SetVolume(double v)
+	{
+		int volume = std::ceil((v * v) * MIX_MAX_VOLUME);
+		std::printf("VOLUME: %i", volume);
+
+		if (m_Data == AudioData::IRON_MUSIC)
+			Mix_VolumeMusic(volume);
+		else
+			Mix_VolumeChunk(m_AudioClip, volume);
 	}
 
 	~AudioClip()

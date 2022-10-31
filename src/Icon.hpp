@@ -6,7 +6,7 @@ class Icon : public Entity
 {
 public:
 	Icon()
-		:spr("res\\images\\icon.png")
+		:spr("res\\images\\icon.png"), tick(0)
 	{
 		spr.ScreenCenter();
 		spr.transform.y -= 130;
@@ -19,7 +19,7 @@ public:
 
 	void Update()
 	{
-		tick += (float)1 / 60;
+		tick += (double)1/60;
 		spr.transform.z_rotation = (double)cos(tick) * 34;
 		spr.transform.y += (double)cos(tick);
 	}
@@ -32,5 +32,5 @@ public:
 	Sprite spr;
 
 private:
-	float tick = 0;
+	double tick;
 };

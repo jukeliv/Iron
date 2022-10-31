@@ -7,7 +7,7 @@
 //AUDIO
 #include "Iron_Engine/Utils/AudioClip.hpp"
 //INPUT
-#include "Iron_Engine/Utils/Input.hpp"
+#include "Iron_Engine/Input.hpp"
 
 #include "Icon.hpp"
 
@@ -20,11 +20,11 @@ public:
 		music("res\\music\\FutureWave.wav", AudioData::IRON_MUSIC)
 	{
 		Text.SetGraphicSize(1.5);
-
 		Text.ScreenCenter();
+
 		Text.transform.y += 150;
 
-		music.Play();
+		music.Play(true);
 	}
 
 	//When the program is shuting down
@@ -37,8 +37,11 @@ public:
 	}
 
 	//Every Frame ( Manage Logic )
+	float f = 0;
 	void Update()
 	{
+		f += (float)1 / 60;
+		music.SetVolume(sin(f) / 2.0 + 0.65);
 		icon.Update();
 	}
 
@@ -50,9 +53,8 @@ public:
 	}
 public:
 	Input input;//ALWAYS ADD AN "Input" HERE!!!
+	AudioClip music;
 
 	Icon icon;
 	Sprite Text;
-
-	AudioClip music;
 };

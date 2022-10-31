@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
 
 	SDL_Event e; 
 	uint8_t quit = 0x0;
+
 	while (!quit)
 	{
 		game.Update();

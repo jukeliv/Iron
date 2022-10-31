@@ -7,15 +7,22 @@
 struct Transform
 {
 public:
-	void SetPosition(float _x, float _y)
+	void SetPosition(float x, float y)
 	{
-		x = _x;
-		y = _y;
+		this->x = x;
+		this->y = y;
 	}
 public:
 	float x, y;
 
 	double z_rotation;
+};
+
+struct SpriteData
+{
+public:
+	SDL_RendererFlip flip;
+	int w, h;
 };
 
 class Sprite
@@ -34,19 +41,20 @@ public:
 
 	void Render()
 	{
-		SDL_Rect renderQuad = { transform.x, transform.y, m_Width, m_Height };
-		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.z_rotation, NULL, SDL_FLIP_NONE);
+		SDL_Rect renderQuad = { transform.x, transform.y, spr_data.w, spr_data.h };
+
+		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.z_rotation, NULL, spr_data.flip);
 	}
 
 	void ScreenCenter()
 	{
-		transform.SetPosition(WINDOW_WIDTH / 2 - (m_Width / 2), WINDOW_HEIGHT / 2 - (m_Height / 2));
+		transform.SetPosition(WINDOW_WIDTH / 2 - (spr_data.w / 2), WINDOW_HEIGHT / 2 - (spr_data.h / 2));
 	}
 
 	void SetGraphicSize(double x)
 	{
-		m_Width *= x;
-		m_Height *= x;
+		spr_data.h *= x;
+		spr_data.w *= x;
 		/*TODO: Figure out how to center this shit
 		transform.x -= pow(x,4);
 		transform.y -= pow(x,4);
@@ -54,9 +62,10 @@ public:
 	}
 public:
 	Transform transform;
-	int m_Width, m_Height;
+	SpriteData spr_data;
 private:
 	SDL_Texture* m_Tex;
+	int m_Width, m_Height;
 private:
 	SDL_Texture* load(const char* path)
 	{
@@ -73,6 +82,9 @@ private:
 
 		m_Width = loadedSurface->w;
 		m_Height = loadedSurface->h;
+
+		spr_data.w = m_Width;
+		spr_data.h = m_Height;
 
 		if (!newTexture)
 		{
