@@ -246,15 +246,18 @@
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
     <ClInclude Include="include\SDL_vulkan.h" />
+    <ClInclude Include="src\Cursor.hpp" />
+    <ClInclude Include="src\Iron_Engine\Math\Mathf.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Vec2.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\CollisionDetector.hpp" />
     <ClInclude Include="src\Iron_Engine\Entity.hpp" />
     <ClInclude Include="src\Icon.hpp" />
-    <ClInclude Include="src\Game.hpp" />
+    <ClInclude Include="src\Iron_Engine\Game.hpp" />
     <ClInclude Include="src\Iron_Engine\Core.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\AudioClip.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\Input.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\Sprite.hpp" />
+    <ClInclude Include="src\MainGame.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\flowers.bmp" />

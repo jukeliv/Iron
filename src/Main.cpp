@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "MainGame.hpp"
 
 /*
 *				  REMEMBER
@@ -8,7 +8,7 @@
 int main(int argc, char* argv[]) 
 {
 	IronGL::Init();
-	Game game;
+	std::unique_ptr<Game> game = std::make_unique<MainGame>();
 
 	SDL_UpdateWindowSurface(IronGL::m_Window);
 
@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
 	while (!quit)
 	{
-		game.Update();
+		game->Update();
 
 		while (SDL_PollEvent(&e) != 0x0)
 		{
@@ -27,24 +27,24 @@ int main(int argc, char* argv[])
 				quit = 0xFF;
 				break;
 			case SDL_KEYDOWN:
-				game.input.keys[e.key.keysym.sym] = 0xFF;
+				game->input.keys[e.key.keysym.sym] = 0xFF;
 				break;
 			case SDL_KEYUP:
-				game.input.keys[e.key.keysym.sym] = 0x0;
+				game->input.keys[e.key.keysym.sym] = 0x0;
 				break;
 			}
 		}
 
-		SDL_SetRenderDrawColor(IronGL::m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(IronGL::m_Renderer, 171, 0xFF, 3, 0xFF);
 
 		SDL_RenderClear(IronGL::m_Renderer);
 
-		game.Render();
+		game->Render();
 
 		SDL_RenderPresent(IronGL::m_Renderer);
 	}
 
-	game.~Game();
+	game->~Game();
 
 	IronGL::Shutdown();
 

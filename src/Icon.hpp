@@ -10,8 +10,8 @@ public:
 		:spr("res\\images\\icon.png"),
 		tick(0)
 	{
+		spr.SetGraphicSize(1.5);
 		spr.ScreenCenter();
-		spr.transform.position.y -= 130;
 	}
 
 	~Icon()
@@ -23,7 +23,7 @@ public:
 	{
 		tick += (double)1/60;
 		spr.transform.z_rotation = (double)cos(tick) * 34;
-		spr.transform.position.y += (double)cos(tick);
+		spr.transform.position.y += (double)cos(tick)/2;
 	}
 
 	void Render()
