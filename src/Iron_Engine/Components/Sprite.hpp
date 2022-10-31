@@ -2,19 +2,31 @@
 
 #include "Iron_Engine\Core.hpp"
 
+#include "Iron_Engine\Math\Vec2.hpp"
+
 #include <string_view>
 
 struct Transform
 {
 public:
-	void SetPosition(float x, float y)
+	void SetPosition(const double& x, const double& y)
 	{
-		this->x = x;
-		this->y = y;
+		position.x = x;
+		position.y = y;
+	}
+
+	void SetPosition(const float& x, const float& y)
+	{
+		position.x = x;
+		position.y = y;
+	}
+
+	void SetPosition(const Vec2& v)
+	{
+		position = v;
 	}
 public:
-	float x, y;
-
+	Vec2 position = Vec2(0,0);
 	double z_rotation;
 };
 
@@ -29,6 +41,7 @@ class Sprite
 {
 public:
 	Sprite(std::string_view path)
+
 	{
 		m_Tex = load(path.data());
 	}
@@ -41,14 +54,14 @@ public:
 
 	void Render()
 	{
-		SDL_Rect renderQuad = { transform.x, transform.y, spr_data.w, spr_data.h };
+		SDL_Rect renderQuad = { transform.position.x, transform.position.y, spr_data.w, spr_data.h };
 
 		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.z_rotation, NULL, spr_data.flip);
 	}
 
 	void ScreenCenter()
 	{
-		transform.SetPosition(WINDOW_WIDTH / 2 - (spr_data.w / 2), WINDOW_HEIGHT / 2 - (spr_data.h / 2));
+		transform.SetPosition((float)WINDOW_WIDTH / 2 - (spr_data.w / 2), (float)WINDOW_HEIGHT / 2 - (spr_data.h / 2));
 	}
 
 	void SetGraphicSize(double x)

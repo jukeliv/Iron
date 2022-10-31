@@ -13,7 +13,13 @@
 #define WINDOW_TITLE "IRON: Test Project"
 
 //LOGGER
-#define ERROR(x) printf("ERROR: %s\n", x)
+#ifndef DISTRIBUTION_BUILD
+#define TRACE(x) printf("[CORE] LOG: %s\n", x)
+#define ERROR(x) printf("[CORE] ERROR: %s\n", x)
+#else
+#define TRACE(x)
+#define ERROR(x)
+#endif // !NDEBUG
 
 namespace IronGL
 {

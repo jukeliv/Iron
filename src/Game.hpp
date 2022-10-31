@@ -3,11 +3,13 @@
 //IRON
 #include "Iron_Engine/Core.hpp"
 //GRAPHICS
-#include "Iron_Engine/Utils/Sprite.hpp"
+#include "Iron_Engine/Components/Sprite.hpp"
 //AUDIO
-#include "Iron_Engine/Utils/AudioClip.hpp"
+#include "Iron_Engine/Components/AudioClip.hpp"
 //INPUT
-#include "Iron_Engine/Input.hpp"
+#include "Iron_Engine/Utils/Input.hpp"
+//GOLDEN LIBRARY
+#include "Iron_Engine/Math/CollisionDetector.hpp"
 
 #include "Icon.hpp"
 
@@ -21,10 +23,10 @@ public:
 	{
 		Text.SetGraphicSize(1.5);
 		Text.ScreenCenter();
-
-		Text.transform.y += 150;
+		Text.transform.position.y += 150;
 
 		music.Play(true);
+		music.SetVolume(0.85);
 	}
 
 	//When the program is shuting down
@@ -37,11 +39,8 @@ public:
 	}
 
 	//Every Frame ( Manage Logic )
-	float f = 0;
 	void Update()
 	{
-		f += (float)1 / 60;
-		music.SetVolume(sin(f) / 2.0 + 0.65);
 		icon.Update();
 	}
 

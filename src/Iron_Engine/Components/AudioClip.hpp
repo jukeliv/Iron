@@ -50,7 +50,6 @@ public:
 	void SetVolume(double v)
 	{
 		int volume = std::ceil((v * v) * MIX_MAX_VOLUME);
-		std::printf("VOLUME: %i", volume);
 
 		if (m_Data == AudioData::IRON_MUSIC)
 			Mix_VolumeMusic(volume);
