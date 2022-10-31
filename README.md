@@ -1,5 +1,5 @@
 # Iron
-	Iron is a 2D Open Source lightweight "Game Engine" made with SDL 2
+Iron is a 2D Open Source lightweight "Game Engine" made with SDL 2
 
 ## HOW TO USE
 	Hey, i wanted to say, that when you download this from github, what you see is an example scene i made for the engine, 
