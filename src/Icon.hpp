@@ -20,7 +20,7 @@ public:
 		spr.~Sprite();
 	}
 
-	void Update(double delta)
+	void Update(const double& delta, const Input& input)
 	{
 		TRACE_VAR(delta);
 

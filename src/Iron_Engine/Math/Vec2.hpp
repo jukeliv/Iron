@@ -12,12 +12,22 @@ public:
 		this->y = y;
 	}
 
-	static double Distance(Vec2 a, Vec2 b)
+	void AddVector(const Vec2& other)
+	{
+		this->x = this->x + other.x; this->y = this->y + other.y;
+	}
+
+	void SubVector(const Vec2& other)
+	{
+		this->x = this->x - other.x; this->y = this->y - other.y;
+	}
+
+	static double Distance(const Vec2& a, const Vec2& b)
 	{
 		return std::sqrtf((b.x * a.x) + (b.y * a.y));
 	}
-
-	static double DistanceSqr(Vec2 a, Vec2 b)
+	
+	static double DistanceSqr(const Vec2& a, const Vec2& b)
 	{
 		return (b.x * a.x) + (b.y * a.y);
 	}

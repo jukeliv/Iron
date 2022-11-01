@@ -7,12 +7,12 @@
 #include "Iron_Engine/Components/Sprite.hpp"
 //AUDIO
 #include "Iron_Engine/Components/AudioClip.hpp"
-//GOLDEN LIBRARY
-#include "Iron_Engine/Math/CollisionDetector.hpp"
+//Math
 #include "Iron_Engine/Math/Mathf.hpp"
+//GOLDEN LIBRARY
+#include "Iron_Engine/Golden/CollisionDetector.hpp"
 
 #include "Icon.hpp"
-#include "Cursor.hpp"
 
 class MainGame : public Game
 {
@@ -33,7 +33,6 @@ public:
 	~MainGame()
 	{
 		icon.~Icon();
-		cursor.~Cursor();
 		music.~AudioClip();
 	}
 
@@ -46,37 +45,25 @@ public:
 	//Every Frame ( Manage Logic )
 	void Update()
 	{
-		icon.Update(delta_time);
-		cursor.Update();
-		
-		if (Golden::CollisionDetector::bounding_sqr(icon.spr, cursor.spr, 0.65))
-		{
-			newW = width * 1.45;
-			newH = height * 1.45;
-		}
-		else
-		{
-			newW = width;
-			newH = height;
-		}
-
-		Mathf::lerp(w, newW, 0.65);
-		Mathf::lerp(h, newH, 0.65);
-
-		icon.spr.SetGraphicSize(w, h);
-
-		icon.spr.ScreenCenter();
+		icon.Update(delta_time, input);
 	}
 
 	//Every Frame ( Draw Images )
 	void Render()
 	{
 		icon.Render();
-		cursor.Render();
+	}
+
+	void RenderUI()
+	{
+		ImGui::Begin("example");
+
+		ImGui::Text("you cant interact with the ui lol");
+
+		ImGui::End();
 	}
 public:
 	AudioClip music;
 
 	Icon icon;
-	Cursor cursor;
 };

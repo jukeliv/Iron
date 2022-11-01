@@ -5,10 +5,7 @@
 class Input
 {
 public:
-	Input()
-	{
-
-	}
+	Input(){}
 
 	std::unordered_map<uint32_t, bool> keys;
 };

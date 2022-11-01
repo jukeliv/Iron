@@ -1,8 +1,13 @@
 #pragma once
 
+//SDL 2
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+//Im Gui
+#include <ImGui\imgui.h>
+#include <ImGui\imgui_impl_sdl.h>
+#include <ImGui\imgui_impl_sdlrenderer.h>
 
 #include <iostream>
 
@@ -55,6 +60,25 @@ namespace IronGL
 			exit(-1);
 		}
 
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+		// Setup Dear ImGui style
+		ImGui::StyleColorsDark();
+
+		// Setup Platform/Renderer backends
+		if (!ImGui_ImplSDL2_InitForSDLRenderer(m_Window, m_Renderer))
+		{
+			ERROR("ImGui with SDLRenderer could not initialize:");
+		}
+		if (!ImGui_ImplSDLRenderer_Init(m_Renderer))
+		{
+			ERROR("ImGui could not initialize Renderer");
+		}
+
 		int imgFlags = IMG_INIT_PNG;
 		if (!(IMG_Init(imgFlags) & imgFlags))
 		{
@@ -78,8 +102,15 @@ namespace IronGL
 	void Shutdown()
 	{
 		//Destroy window
+		SDL_DestroyRenderer(m_Renderer);
+		m_Renderer = NULL;
 		SDL_DestroyWindow(m_Window);
 		m_Window = NULL;
+		SDL_Quit();
+
+		ImGui_ImplSDLRenderer_Shutdown();
+		ImGui_ImplSDL2_Shutdown();
+		ImGui::DestroyContext();
 
 		SDL_Quit();
 	}

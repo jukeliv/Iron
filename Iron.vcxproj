@@ -149,13 +149,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\ImGui\imgui.cpp" />
+    <ClCompile Include="include\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="include\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="include\ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="include\ImGui\imgui_impl_sdlrenderer.cpp" />
+    <ClCompile Include="include\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\SDL_config.h.cmake" />
     <None Include="include\SDL_config.h.in" />
     <None Include="include\SDL_config_macosx.h.orig" />
-    <None Include="SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SDL2.lib" />
@@ -165,6 +171,14 @@
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
+    <ClInclude Include="include\ImGui\imconfig.h" />
+    <ClInclude Include="include\ImGui\imgui.h" />
+    <ClInclude Include="include\ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="include\ImGui\imgui_impl_sdlrenderer.h" />
+    <ClInclude Include="include\ImGui\imgui_internal.h" />
+    <ClInclude Include="include\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="include\ImGui\imstb_textedit.h" />
+    <ClInclude Include="include\ImGui\imstb_truetype.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL_assert.h" />
     <ClInclude Include="include\SDL_atomic.h" />
@@ -255,10 +269,9 @@
     <ClInclude Include="include\SDL_video.h" />
     <ClInclude Include="include\SDL_vulkan.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="src\Cursor.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Mathf.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Vec2.hpp" />
-    <ClInclude Include="src\Iron_Engine\Math\CollisionDetector.hpp" />
+    <ClInclude Include="src\Iron_Engine\Golden\CollisionDetector.hpp" />
     <ClInclude Include="src\Iron_Engine\Entity.hpp" />
     <ClInclude Include="src\Icon.hpp" />
     <ClInclude Include="src\Iron_Engine\Game.hpp" />
@@ -270,7 +283,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />
-    <Image Include="icon1.ico" />
     <Image Include="res\flowers.bmp" />
     <Image Include="res\icon.png" />
     <Image Include="res\images\icon.png" />

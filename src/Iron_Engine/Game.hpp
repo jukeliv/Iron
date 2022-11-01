@@ -9,7 +9,7 @@ class Game
 public:
 	//First frame after initializing SDL 2
 	Game()
-		:delta_time(NULL)
+		:delta_time(0)
 	{
 	}
 
@@ -21,6 +21,9 @@ public:
 
 	//Every Frame ( Draw Images )
 	virtual void Render(){}
+
+	//Every Frame ( Draw UI with Dear ImGui )
+	virtual void RenderUI() {}
 public:
 	Input input;//DO NOT REMOVE THIS!!!
 	double delta_time;

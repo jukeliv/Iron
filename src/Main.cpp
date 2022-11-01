@@ -16,6 +16,9 @@ int main(int argc, char* argv[])
 	uint8_t quit = 0x0;
 
 	double start_time;
+
+	int xMouse, yMouse;
+
 	while (!quit)
 	{
 		start_time = SDL_GetTicks64();
@@ -37,12 +40,20 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		ImGui_ImplSDLRenderer_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
+
+		game->RenderUI();
+
+		ImGui::Render();
 		SDL_SetRenderDrawColor(IronGL::m_Renderer, 171, 0xFF, 3, 0xFF);
 
 		SDL_RenderClear(IronGL::m_Renderer);
 
 		game->Render();
 
+		ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 		SDL_RenderPresent(IronGL::m_Renderer);
 
 		game->delta_time = (double)(SDL_GetTicks64() - start_time) / 1000;
