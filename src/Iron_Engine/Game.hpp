@@ -9,6 +9,7 @@ class Game
 public:
 	//First frame after initializing SDL 2
 	Game()
+		:delta_time(NULL)
 	{
 	}
 

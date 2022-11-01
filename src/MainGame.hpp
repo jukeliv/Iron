@@ -48,7 +48,8 @@ public:
 	{
 		icon.Update(delta_time);
 		cursor.Update();
-		if (Golden::CollisionDetector::bounding_sqr(icon.spr, cursor.spr))
+		
+		if (Golden::CollisionDetector::bounding_sqr(icon.spr, cursor.spr, 0.65))
 		{
 			newW = width * 1.45;
 			newH = height * 1.45;

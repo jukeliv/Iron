@@ -16,7 +16,7 @@
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("[CORE] LOG: %s\n", x)
 #define TRACE_VAR(x) printf("[CORE] LOG: %f\n", x)
-#define ERROR(x) printf("[CORE] ERROR: %\n", x)
+#define ERROR(x) printf("[CORE] ERROR: %s\n", x)
 #else
 #define TRACE(x)
 #define TRACE_VAR(x)

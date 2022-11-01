@@ -2,6 +2,7 @@
 
 #include "Iron_Engine\Entity.hpp"
 #include "Iron_Engine\Components\Sprite.hpp"
+#include "MainGame.hpp"
 
 class Icon : public Entity
 {
@@ -22,9 +23,9 @@ public:
 	void Update(double delta)
 	{
 		TRACE_VAR(delta);
+
 		tick += delta;
 		spr.transform.z_rotation = (double)cos(tick) * 34;
-		spr.transform.position.y += (double)cos(tick)/2;
 	}
 
 	void Render()

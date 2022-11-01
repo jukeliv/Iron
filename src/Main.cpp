@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 		SDL_RenderPresent(IronGL::m_Renderer);
 
-		game->delta_time = (double)(SDL_GetTicks64() - start_time) / 100;
+		game->delta_time = (double)(SDL_GetTicks64() - start_time) / 1000;
 	}
 
 	game->~Game();
