@@ -15,11 +15,13 @@
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("[CORE] LOG: %s\n", x)
-#define ERROR(x) printf("[CORE] ERROR: %s\n", x)
+#define TRACE_VAR(x) printf("[CORE] LOG: %f\n", x)
+#define ERROR(x) printf("[CORE] ERROR: %\n", x)
 #else
 #define TRACE(x)
+#define TRACE_VAR(x)
 #define ERROR(x)
-#endif // !NDEBUG
+#endif // !DISTRIBUTION_BUILD
 
 namespace IronGL
 {

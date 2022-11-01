@@ -15,8 +15,10 @@ int main(int argc, char* argv[])
 	SDL_Event e; 
 	uint8_t quit = 0x0;
 
+	double start_time;
 	while (!quit)
 	{
+		start_time = SDL_GetTicks64();
 		game->Update();
 
 		while (SDL_PollEvent(&e) != 0x0)
@@ -42,6 +44,8 @@ int main(int argc, char* argv[])
 		game->Render();
 
 		SDL_RenderPresent(IronGL::m_Renderer);
+
+		game->delta_time = (double)(SDL_GetTicks64() - start_time) / 100;
 	}
 
 	game->~Game();

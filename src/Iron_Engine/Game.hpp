@@ -22,4 +22,5 @@ public:
 	virtual void Render(){}
 public:
 	Input input;//DO NOT REMOVE THIS!!!
+	double delta_time;
 };

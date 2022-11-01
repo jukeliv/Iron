@@ -73,6 +73,16 @@ public:
 		transform.y -= pow(x,4);
 		*/
 	}
+	void SetGraphicSize(Vec2 v)
+	{
+		spr_data.h = v.x;
+		spr_data.w = v.y;
+	}
+	void SetGraphicSize(double w, double h)
+	{
+		spr_data.h = h;
+		spr_data.w = w;
+	}
 public:
 	Transform transform;
 	SpriteData spr_data;

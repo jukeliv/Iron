@@ -24,6 +24,9 @@ public:
 
 		music.Play(true);
 		music.SetVolume(0.85);
+
+		width = icon.spr.spr_data.w;
+		height = icon.spr.spr_data.h;
 	}
 
 	//When the program is shuting down
@@ -34,11 +37,34 @@ public:
 		music.~AudioClip();
 	}
 
+	int width, height;
+
+	double newW, newH;
+
+	double w, h;
+
 	//Every Frame ( Manage Logic )
 	void Update()
 	{
-		icon.Update();
+		icon.Update(delta_time);
 		cursor.Update();
+		if (Golden::CollisionDetector::bounding_sqr(icon.spr, cursor.spr))
+		{
+			newW = width * 1.45;
+			newH = height * 1.45;
+		}
+		else
+		{
+			newW = width;
+			newH = height;
+		}
+
+		Mathf::lerp(w, newW, 0.65);
+		Mathf::lerp(h, newH, 0.65);
+
+		icon.spr.SetGraphicSize(w, h);
+
+		icon.spr.ScreenCenter();
 	}
 
 	//Every Frame ( Draw Images )
