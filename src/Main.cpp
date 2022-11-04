@@ -1,5 +1,5 @@
-#include "MainGame.hpp"
-
+#include "MainGame.cpp"
+#include "Iron_Engine/Utils/Timer.hpp"
 /*
 *				  REMEMBER
 * "Game.h" is where you write all your logic
@@ -15,13 +15,15 @@ int main(int argc, char* argv[])
 	SDL_Event e; 
 	uint8_t quit = 0x0;
 
-	double start_time;
+	float start_time;
 
-	int xMouse, yMouse;
+	Timer fps_timer;
+	Timer cap_timer;
 
 	while (!quit)
 	{
-		start_time = SDL_GetTicks64();
+		fps_timer.start_timer();
+
 		game->Update();
 
 		while (SDL_PollEvent(&e) != 0x0)
@@ -56,7 +58,16 @@ int main(int argc, char* argv[])
 		ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 		SDL_RenderPresent(IronGL::m_Renderer);
 
-		game->delta_time = (double)(SDL_GetTicks64() - start_time) / 1000;
+
+		fps_timer.end_timer();
+
+		float cap = cap_timer.elapsed_time();
+		if (cap < TICKS_PER_FRAME)
+		{
+			SDL_Delay(TICKS_PER_FRAME - cap);
+		}
+
+		game->delta_time = (double)fps_timer.elapsed_time() / 1000;
 	}
 
 	game->~Game();

@@ -75,10 +75,10 @@ public:
 	}
 	void SetGraphicSize(Vec2 v)
 	{
-		spr_data.h = v.x;
-		spr_data.w = v.y;
+		spr_data.h = (int)v.x;
+		spr_data.w = (int)v.y;
 	}
-	void SetGraphicSize(double w, double h)
+	void SetGraphicSize(int w, int h)
 	{
 		spr_data.h = h;
 		spr_data.w = w;

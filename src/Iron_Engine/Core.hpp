@@ -17,6 +17,9 @@
 
 #define WINDOW_TITLE "IRON: Test Project"
 
+#define FPS_CAP 60
+#define TICKS_PER_FRAME (FPS_CAP / 1000)
+
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("[CORE] LOG: %s\n", x)
@@ -63,8 +66,10 @@ namespace IronGL
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+		/*
+		int configFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableSetMousePos | ImGuiConfigFlags_NavEnableGamepad;
+		io.ConfigFlags = configFlags;*/
+
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
