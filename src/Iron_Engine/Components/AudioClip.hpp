@@ -15,7 +15,9 @@ public:
 
 			if (!m_MusicClip)
 			{
-				ERROR("Failed to load music! SDL_mixer Error:");
+				ERROR("Failed to load music!");
+				ERROR(path.data());
+				ERROR("SDL_MIXER ERROR: ");
 				ERROR(Mix_GetError());
 			}
 		}

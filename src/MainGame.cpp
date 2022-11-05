@@ -21,7 +21,7 @@ public:
 	//First frame after initializing SDL 2
 	MainGame()
 		:music("res\\music\\FutureWave.wav", AudioData::IRON_MUSIC),
-		background("res\\images\\background.png"), food("res\\images\\box.png"),
+background("res\\images\\background.png"), food("res\\images\\box.png"),
 		gameOverScreen("res\\images\\game_over.png")
 	{
 		food.SetGraphicSize(0.65);
@@ -29,8 +29,10 @@ public:
 		food.transform.position.x = WINDOW_WIDTH / 2;
 
 		background.ScreenCenter();
+		
 		music.Play(true);
 		music.SetVolume(0.75);
+		
 	}
 
 	//When the program is shuting down
@@ -38,6 +40,7 @@ public:
 	{
 		player.~Platform();
 		music.~AudioClip();
+		food.~Sprite();
 	}
 
 	//Every Frame ( Manage Logic )
@@ -95,10 +98,10 @@ public:
 	void Reset(Sprite& spr)
 	{
 		spr.ScreenCenter();
-		spr.transform.position.y = -Random::random_value(spr.spr_data.w*1.5, spr.spr_data.w * 2.5);
-		spr.transform.position.x = Random::random_value(spr.spr_data.w, WINDOW_WIDTH - spr.spr_data.w);
 
-		spr.transform.position.x = std::abs(spr.transform.position.x);
+		spr.transform.position.y = -Random::random_value(spr.spr_data.w*1.5, spr.spr_data.w * 2.5);
+
+		spr.transform.position.x = Random::random_value(spr.spr_data.w, WINDOW_WIDTH - spr.spr_data.w);
 	}
 
 public:
