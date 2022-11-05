@@ -21,7 +21,7 @@ public:
 		end = SDL_GetTicks();
 	}
 
-	float elapsed_time()
+	Uint32 elapsed_time()
 	{
 		if(end > start)
 			return end - start;
@@ -29,6 +29,6 @@ public:
 	}
 
 public:
-	uint32_t start;
-	uint32_t end;
+	Uint32 start;
+	Uint32 end;
 };

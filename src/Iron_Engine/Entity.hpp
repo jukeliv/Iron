@@ -13,7 +13,7 @@ public:
 
 	}
 
-	virtual void Update() {}
+	virtual void Update(const double& delta) {}
 
 	virtual void Render() {}
 };

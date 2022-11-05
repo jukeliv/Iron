@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include <cstdlib>
+#include <stdlib.h>
+#include "Mathf.hpp"
 
 class Random
 {

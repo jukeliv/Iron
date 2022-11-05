@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Iron_Engine/Core.hpp"
+#include "Iron_Engine/Game.hpp"
 #include "Iron_Engine/Utils/Timer.hpp"
 
 class Application
@@ -11,22 +12,26 @@ public:
 	{
 	}
 
-	template <typename G>
 	void Init()
 	{
 		IronGL::Init();
-		game = std::make_unique<G>();
 
 		SDL_UpdateWindowSurface(IronGL::m_Window);
 	}
 
+	template <typename G>
+	void SetCurrentGame()
+	{
+		game = std::make_unique<G>();
+	}
+
 	void Run()
 	{
-		SDL_Event e;
-		bool quit = false;
-
 		Timer fps_timer;
 		Timer cap_timer;
+		
+		SDL_Event e;
+		bool quit = false;
 
 		while (!quit)
 		{
@@ -34,12 +39,12 @@ public:
 
 			game->Update();
 
-			while (SDL_PollEvent(&e) != 0x0)
+			while (SDL_PollEvent(&e) != 0)
 			{
 				switch (e.type)
 				{
 				case SDL_QUIT:
-					quit = 0xFF;
+					quit = true;
 					break;
 				case SDL_KEYDOWN:
 					game->input.keys[e.key.keysym.sym] = true;
@@ -48,6 +53,7 @@ public:
 					game->input.keys[e.key.keysym.sym] = false;
 					break;
 				}
+				ImGui_ImplSDL2_ProcessEvent(&e);
 			}
 
 			ImGui_ImplSDLRenderer_NewFrame();
@@ -66,14 +72,13 @@ public:
 			ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 			SDL_RenderPresent(IronGL::m_Renderer);
 
-
-			fps_timer.end_timer();
-
-			float cap = cap_timer.elapsed_time();
+			Uint32 cap = cap_timer.elapsed_time();
 			if (cap < TICKS_PER_FRAME)
 			{
 				SDL_Delay(TICKS_PER_FRAME - cap);
 			}
+
+			fps_timer.end_timer();
 
 			game->delta_time = (double)fps_timer.elapsed_time() / 1000;
 		}
@@ -82,7 +87,7 @@ public:
 
 		IronGL::Shutdown();
 
-		exit(0x0);
+		exit(0);
 	}
 private:
 	std::unique_ptr<Game> game;

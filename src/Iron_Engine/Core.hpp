@@ -1,14 +1,16 @@
 #pragma once
 
-//SDL 2
+//SDL2
 #include <SDL.h>
+#include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-//Im Gui
+//Dear ImGui
 #include <ImGui\imgui.h>
 #include <ImGui\imgui_impl_sdl.h>
 #include <ImGui\imgui_impl_sdlrenderer.h>
-
+//OpenGL
+#include <GL\GLU.h>
 #include <iostream>
 
 //WINDOW VARIABLES
@@ -17,8 +19,10 @@
 
 #define WINDOW_TITLE "IRON: Test Project"
 
+#define ENABLE_VSYNC true
+
 #define FPS_CAP 60
-#define TICKS_PER_FRAME (FPS_CAP / 1000)
+#define TICKS_PER_FRAME (1000 / FPS_CAP)
 
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
@@ -33,9 +37,10 @@
 
 namespace IronGL
 {
-	SDL_Window* m_Window = nullptr;
-	SDL_Surface* m_ScreenSurface = nullptr;
-	SDL_Renderer* m_Renderer = nullptr;
+	SDL_Window* m_Window;
+	SDL_Surface* m_ScreenSurface;
+	SDL_Renderer* m_Renderer;
+	SDL_GLContext m_Context;
 
 	void Init()
 	{
@@ -46,13 +51,54 @@ namespace IronGL
 			exit(SDL_Init(SDL_INIT_VIDEO));
 		}
 
-		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+
+		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
 		if (!m_Window)
 		{
 			ERROR("Window could not be created! SDL_Error: ");
 			ERROR(SDL_GetError());
 
+			exit(-1);
+		}
+
+		m_Context = SDL_GL_CreateContext(m_Window);
+		if (!m_Context)
+		{
+			TRACE("Couldn't Create a Context");
+			exit(-1);
+		}
+
+		if (SDL_GL_SetSwapInterval(ENABLE_VSYNC) < 0)
+		{
+			TRACE("Unable to set VSync!");
+			ERROR(SDL_GetError());
+		}
+
+		GLenum error = GL_NO_ERROR;
+
+		//Initialize Projection Matrix
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
+		//Check for error
+		error = glGetError();
+		if (error != GL_NO_ERROR)
+		{
+			printf("Error initializing OpenGL! %s\n");
+			exit(-1);
+		}
+
+		//Initialize Modelview Matrix
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		//Check for error
+		error = glGetError();
+		if (error != GL_NO_ERROR)
+		{
+			printf("Error initializing OpenGL!\n");
 			exit(-1);
 		}
 
@@ -66,11 +112,9 @@ namespace IronGL
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		/*
-		int configFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableSetMousePos | ImGuiConfigFlags_NavEnableGamepad;
-		io.ConfigFlags = configFlags;*/
-
-
+		Uint32 configFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableSetMousePos | ImGuiConfigFlags_NavEnableGamepad;
+		io.ConfigFlags = configFlags;
+		
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 
@@ -84,7 +128,7 @@ namespace IronGL
 			ERROR("ImGui could not initialize Renderer");
 		}
 
-		int imgFlags = IMG_INIT_PNG;
+		Uint32 imgFlags = IMG_INIT_PNG ;
 		if (!(IMG_Init(imgFlags) & imgFlags))
 		{
 			ERROR("SDL_image could not initialize! SDL_image Error:");

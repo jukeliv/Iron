@@ -9,9 +9,9 @@
 #include "Iron_Engine/Components/AudioClip.hpp"
 //Math
 #include "Iron_Engine/Math/Mathf.hpp"
+#include "Iron_Engine/Math/Random.hpp"
 //GOLDEN LIBRARY
 #include "Iron_Engine/Golden/CollisionDetector.hpp"
-#include "Iron_Engine/Math/Random.hpp"
 
 #include "Platform.cpp"
 
@@ -21,13 +21,10 @@ public:
 	//First frame after initializing SDL 2
 	MainGame()
 		:music("res\\music\\FutureWave.wav", AudioData::IRON_MUSIC),
-background("res\\images\\background.png"), food("res\\images\\box.png"),
-		gameOverScreen("res\\images\\game_over.png")
+		background("res\\images\\background.png"),
+		gameOverScreen("res\\images\\game_over.png"),
+		LOL("res\\images\\box.png")
 	{
-		food.SetGraphicSize(0.65);
-		Reset(food);
-		food.transform.position.x = WINDOW_WIDTH / 2;
-
 		background.ScreenCenter();
 		
 		music.Play(true);
@@ -40,7 +37,7 @@ background("res\\images\\background.png"), food("res\\images\\box.png"),
 	{
 		player.~Platform();
 		music.~AudioClip();
-		food.~Sprite();
+		//food.~Box();
 	}
 
 	//Every Frame ( Manage Logic )
@@ -48,25 +45,24 @@ background("res\\images\\background.png"), food("res\\images\\box.png"),
 	{
 		if (timer < 1  || score < 0)
 		{
-			game_over=true;
+			game_over = true;
 			return;
 		}
 
+		//food.Update(delta_time);
 
-		food.transform.position.y += 400 * delta_time;
-		food.transform.z_rotation += 450 * delta_time;
-
-		//Scoring
-		if (Golden::CollisionDetector::bounding_sqr(food, player.spr, 1.05))
+		/*Scoring
+		if (Golden::CollisionDetector::bounding_sqr(food.spr, player.spr, 1.05))
 		{
-			Reset(food);
+			//food.Reset();
 			score++;
 		}
-		if (food.transform.position.y > WINDOW_HEIGHT + food.spr_data.h)
+
+		if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.spr_data.h)
 		{
-			Reset(food);
+			//food.Reset();
 			score--;
-		}
+		}*/
 
 		timer -= delta_time;
 		player.Update(delta_time, input);
@@ -83,25 +79,19 @@ background("res\\images\\background.png"), food("res\\images\\box.png"),
 		background.Render();
 
 		player.Render();
-		food.Render();
+		//food.Render();
+		LOL.Render();
 	}
 
 	void RenderUI()
 	{
 		ImGui::Begin(" -- Example UI -- ");
 
-		ImGui::Text("Score: %i\nTime Left: %i", score, (int)std::floor(timer));
+		uint32_t time = (int)std::floor(timer);
+
+		ImGui::Text("Score: %i\nTime Left: %i", score < 0 ? 0 : score, time);
 
 		ImGui::End();
-	}
-
-	void Reset(Sprite& spr)
-	{
-		spr.ScreenCenter();
-
-		spr.transform.position.y = -Random::random_value(spr.spr_data.w*1.5, spr.spr_data.w * 2.5);
-
-		spr.transform.position.x = Random::random_value(spr.spr_data.w, WINDOW_WIDTH - spr.spr_data.w);
 	}
 
 public:
@@ -111,9 +101,9 @@ public:
 	float timer = 30;
 
 	Platform player;
-	Sprite food;
 	Sprite background;
 	Sprite gameOverScreen;
+	Sprite LOL;
 private:
 	bool game_over;
 };

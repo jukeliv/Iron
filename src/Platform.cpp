@@ -22,7 +22,7 @@ public:
 	}
 
 	Vec2 velocity;
-	void Update(const double& delta, Input& input)
+	void Update(const float& delta, Input& input)
 	{
 		if (input.keys[SDLK_a] || input.keys[SDLK_LEFT])
 			velocity.x = -1;
@@ -34,7 +34,7 @@ public:
 		spr.transform.position.x += velocity.x * 300 * delta;
 		Mathf::clamp(spr.transform.position.x, 0, WINDOW_WIDTH - spr.spr_data.w);
 
-		Mathf::lerp(spr.transform.z_rotation, velocity.x * 15, 0.1);
+		Mathf::lerp(spr.transform.z_rotation, velocity.x * 15, delta*3.5);
 	}
 
 	void Render()

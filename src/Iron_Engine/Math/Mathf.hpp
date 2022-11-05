@@ -2,12 +2,12 @@
 class Mathf
 {
 public:
-	static void lerp(double& a, const double& b, const double& t)
+	static void lerp(float& a, const double& b, const double& t)
 	{
 		a += (b - a) * t;
 	}
 
-	static void clamp(double& a, const double& min, const double& max)
+	static void clamp(float& a, const double& min, const double& max)
 	{
 		if (a < min)
 			a = min;
