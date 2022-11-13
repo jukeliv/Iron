@@ -6,20 +6,38 @@ struct Vec2
 public:
 	float x, y;
 
-	Vec2(float x, float y)
+	Vec2(const float& x, const float& y)
 	{
 		this->x = x;
 		this->y = y;
 	}
 
-	void AddVector(const Vec2& other)
-	{
-		this->x = this->x + other.x; this->y = this->y + other.y;
+	Vec2 operator+=(const Vec2& o) {
+		x += o.x;
+		y += o.y;
+		return *this;
 	}
 
-	void SubVector(const Vec2& other)
-	{
-		this->x = this->x - other.x; this->y = this->y - other.y;
+	Vec2 operator-=(const Vec2& o) {
+		x -= o.x;
+		y -= o.y;
+		return *this;
+	}
+
+	Vec2 operator*=(const float& o) {
+		x *= o;
+		y *= o;
+		return *this;
+	}
+
+	Vec2 operator/=(const float& o) {
+		x /= o;
+		y /= o;
+		return *this;
+	}
+
+	Vec2 operator*(const float& o) {
+		return {x*o, y*o};
 	}
 
 	static float Distance(const Vec2& a, const Vec2& b)
@@ -35,12 +53,7 @@ public:
 	void normalize()
 	{
 		Vec2 in = { this->x, this->y };
-		double l = Distance(in, in);
-
-		this->x /= l;
-		this->y /= l;
-
-		this->x *= 10;
-		this->y *= 10;
+		this->operator/=(Distance(in, in));
+		this->operator*=(10);
 	}
 };

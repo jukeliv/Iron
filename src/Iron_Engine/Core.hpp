@@ -27,7 +27,7 @@
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("LOG: %s\n", x)
-#define TRACE_VAR(x) printf("LOG: %f\n", x)
+#define TRACE_VAR(x) printf("LOG: %u\n", x)
 #define ERROR(x) printf("ERROR: %s\n", x)
 #else
 #define TRACE(x)
@@ -48,7 +48,7 @@ namespace IronGL
 		{
 			ERROR("SDL could not initialize! SDL_Error:");
 			ERROR(SDL_GetError());
-			exit(SDL_Init(SDL_INIT_VIDEO));
+			exit(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO));
 		}
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);

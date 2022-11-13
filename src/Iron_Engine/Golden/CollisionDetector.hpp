@@ -1,29 +1,32 @@
 #pragma once
-#include "Iron_Engine/Components/Sprite.hpp"
+
+struct Collider
+{
+	Collider(const Vec2& b)
+		:bounds(b), position(0,0){}
+	//Dont use transform, for now we dont need rotation :/
+	Vec2 position;
+
+	Vec2 bounds;
+};
 
 namespace Golden {
 	class CollisionDetector
 	{
 	public:
-		static bool bounding_sqr(const Sprite& a, const Sprite& b)
+		static bool bounding_sqr(const Collider& a, const Collider& b)
 		{
-			return (b.transform.position.x < a.transform.position.x + a.spr_data.w &&
-				b.transform.position.x + b.spr_data.w > a.transform.position.x &&
-				b.transform.position.y < a.transform.position.y + a.spr_data.h &&
-				b.transform.position.y + b.spr_data.h > a.transform.position.y);
+			return (b.position.x < a.position.x + a.bounds.x &&
+				b.position.x + b.bounds.x > a.position.x &&
+				b.position.y < a.position.y + a.bounds.y &&
+				b.position.y + b.bounds.y > a.position.y);
 		}
 
-		static bool bounding_sqr(const Sprite& a, const Sprite& b, const double& size)
-		{
-			return (b.transform.position.x < a.transform.position.x + a.spr_data.w * size &&
-				b.transform.position.x + b.spr_data.w * size > a.transform.position.x &&
-				b.transform.position.y < a.transform.position.y + a.spr_data.h * size &&
-				b.transform.position.y + b.spr_data.h * size > a.transform.position.y);
-		}
-
+		/*
+		* dont use this, is broken xd
 		static bool bounding_circle(const Sprite& a, const Sprite& b)
 		{
 			return (Vec2::Distance(a.transform.position, b.transform.position) >= a.spr_data.w || Vec2::Distance(a.transform.position, b.transform.position) >= b.spr_data.w);
-		}
+		}*/
 	};
 }

@@ -9,23 +9,6 @@
 struct Transform
 {
 public:
-	void SetPosition(const double& x, const double& y)
-	{
-		position.x = x;
-		position.y = y;
-	}
-
-	void SetPosition(const float& x, const float& y)
-	{
-		position.x = x;
-		position.y = y;
-	}
-
-	void SetPosition(const Vec2& v)
-	{
-		position = v;
-	}
-public:
 	Vec2 position = { 0,0 };
 	float z_rotation;
 };
@@ -35,7 +18,6 @@ struct SpriteData
 public:
 	SDL_RendererFlip flip;
 	Vec2 clip = { 0, 0 };
-	int w, h;
 };
 
 class Sprite
@@ -54,34 +36,32 @@ public:
 
 	void Render()
 	{
-		SDL_Rect renderQuad = { transform.position.x, transform.position.y, spr_data.w, spr_data.h };
+		SDL_Rect renderQuad = { transform.position.x, transform.position.y, spr_data.clip.x, spr_data.clip.y };
 
-		SDL_Point center; center.x = spr_data.w / 2; center.y = spr_data.h / 2;
+		SDL_Point center; center.x = (float)spr_data.clip.x / 2; center.y = (float)spr_data.clip.y / 2;
 
 		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.z_rotation, &center, spr_data.flip);
 	}
 
 	void ScreenCenter()
 	{
-		transform.SetPosition((float)WINDOW_WIDTH / 2 - (spr_data.w / 2), (float)WINDOW_HEIGHT / 2 - (spr_data.h / 2));
+		transform.position = { (float)WINDOW_WIDTH / 2 - (spr_data.clip.x / 2), (float)WINDOW_HEIGHT / 2 - (spr_data.clip.y / 2) };
 	}
 
-	void SetGraphicSize(double x)
+	void SetGraphicSize(const double& x)
 	{
-		spr_data.h *= x;
-		spr_data.w *= x;
+		spr_data.clip *= x;
 	}
 
-	void SetGraphicSize(Vec2 v)
+	void SetGraphicSize(const Vec2& v)
 	{
-		spr_data.h = (int)v.x;
-		spr_data.w = (int)v.y;
+		spr_data.clip = v;
 	}
 
-	void SetGraphicSize(int w, int h)
+	void SetGraphicSize(const int& w, const int& h)
 	{
-		spr_data.h = h;
-		spr_data.w = w;
+		spr_data.clip.y = h;
+		spr_data.clip.x = w;
 	}
 public:
 	Transform transform;
@@ -101,9 +81,8 @@ private:
 		}
 		
 		newTexture = SDL_CreateTextureFromSurface(IronGL::m_Renderer, loadedSurface);
-
-		spr_data.w = loadedSurface->w;
-		spr_data.h = loadedSurface->h;
+		spr_data.clip.x = loadedSurface->w;
+		spr_data.clip.y = loadedSurface->h;
 
 		if (!newTexture)
 		{

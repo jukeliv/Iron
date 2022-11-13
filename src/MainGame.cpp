@@ -7,13 +7,11 @@
 #include "Iron_Engine/Components/Sprite.hpp"
 //AUDIO
 #include "Iron_Engine/Components/AudioClip.hpp"
-//Math
-#include "Iron_Engine/Math/Mathf.hpp"
-#include "Iron_Engine/Math/Random.hpp"
 //GOLDEN LIBRARY
 #include "Iron_Engine/Golden/CollisionDetector.hpp"
 
 #include "Platform.cpp"
+#include "Box.cpp"
 
 class MainGame : public Game
 {
@@ -22,8 +20,7 @@ public:
 	MainGame()
 		:music("res\\music\\FutureWave.wav", AudioData::IRON_MUSIC),
 		background("res\\images\\background.png"),
-		gameOverScreen("res\\images\\game_over.png"),
-		LOL("res\\images\\box.png")
+		gameOverScreen("res\\images\\game_over.png")
 	{
 		background.ScreenCenter();
 		
@@ -37,35 +34,51 @@ public:
 	{
 		player.~Platform();
 		music.~AudioClip();
-		//food.~Box();
+		food.~Box();
 	}
 
 	//Every Frame ( Manage Logic )
 	void Update()
 	{
-		if (timer < 1  || score < 0)
-		{
-			game_over = true;
+		game_over = timer < 1 || score < 0;
+
+		if (game_over)
 			return;
-		}
 
-		//food.Update(delta_time);
-
-		/*Scoring
-		if (Golden::CollisionDetector::bounding_sqr(food.spr, player.spr, 1.05))
+		if (Golden::CollisionDetector::bounding_sqr(food.collider, player.collider))
 		{
-			//food.Reset();
+			food.Reset();
 			score++;
 		}
-
-		if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.spr_data.h)
+		else if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.spr_data.clip.x)
 		{
-			//food.Reset();
+			food.Reset(true);
 			score--;
-		}*/
+		}
 
 		timer -= delta_time;
+
 		player.Update(delta_time, input);
+
+		food.Update(delta_time);
+	}
+
+	//Process SDL2 Events (Input, Mouse Pos, etc...)
+	void ProcessEvents(const SDL_Event& e)
+	{
+		if (game_over)
+			return;
+		uint32_t key = e.key.keysym.sym;
+
+		switch (e.type)
+		{
+		case SDL_KEYDOWN:
+			input.keys[key] = true;
+			break;
+		case SDL_KEYUP:
+			input.keys[key] = false;
+			break;
+		}
 	}
 
 	//Every Frame ( Draw Images )
@@ -79,8 +92,7 @@ public:
 		background.Render();
 
 		player.Render();
-		//food.Render();
-		LOL.Render();
+		food.Render();
 	}
 
 	void RenderUI()
@@ -89,21 +101,21 @@ public:
 
 		uint32_t time = (int)std::floor(timer);
 
-		ImGui::Text("Score: %i\nTime Left: %i", score < 0 ? 0 : score, time);
-
+		ImGui::Text("Score: %u", score < 0 ? 0 : score);
+		ImGui::Text("Time Left: %i", time);
 		ImGui::End();
 	}
 
 public:
 	AudioClip music;
 
-	int score = 0;
-	float timer = 30;
+	LONGLONG score = 0;
+	float timer = 60;
 
 	Platform player;
 	Sprite background;
 	Sprite gameOverScreen;
-	Sprite LOL;
+	Box food;
 private:
 	bool game_over;
 };

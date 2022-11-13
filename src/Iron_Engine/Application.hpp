@@ -4,6 +4,8 @@
 #include "Iron_Engine/Game.hpp"
 #include "Iron_Engine/Utils/Timer.hpp"
 
+#include <future>
+
 class Application
 {
 public:
@@ -22,6 +24,8 @@ public:
 	template <typename G>
 	void SetCurrentGame()
 	{
+		game.release();
+		game.reset();
 		game = std::make_unique<G>();
 	}
 
@@ -41,36 +45,30 @@ public:
 
 			while (SDL_PollEvent(&e) != 0)
 			{
-				switch (e.type)
-				{
-				case SDL_QUIT:
-					quit = true;
-					break;
-				case SDL_KEYDOWN:
-					game->input.keys[e.key.keysym.sym] = true;
-					break;
-				case SDL_KEYUP:
-					game->input.keys[e.key.keysym.sym] = false;
-					break;
-				}
+				quit = e.type == SDL_QUIT;
+
+				if(e.key.keysym.sym == SDLK_r)
+					SetCurrentGame<MainGame>();
+
+				game->ProcessEvents(e);
 				ImGui_ImplSDL2_ProcessEvent(&e);
 			}
+
+			SDL_SetRenderDrawColor(IronGL::m_Renderer, 171, 0x0, 0x0, 0x0);
+
+			game->Render();
 
 			ImGui_ImplSDLRenderer_NewFrame();
 			ImGui_ImplSDL2_NewFrame();
 			ImGui::NewFrame();
-
 			game->RenderUI();
 
 			ImGui::Render();
-			SDL_SetRenderDrawColor(IronGL::m_Renderer, 171, 0xFF, 3, 0xFF);
-
-			SDL_RenderClear(IronGL::m_Renderer);
-
-			game->Render();
 
 			ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 			SDL_RenderPresent(IronGL::m_Renderer);
+			
+			SDL_RenderClear(IronGL::m_Renderer);
 
 			Uint32 cap = cap_timer.elapsed_time();
 			if (cap < TICKS_PER_FRAME)
