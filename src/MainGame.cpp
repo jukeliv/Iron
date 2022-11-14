@@ -22,8 +22,6 @@ public:
 		background("res\\images\\background.png"),
 		gameOverScreen("res\\images\\game_over.png")
 	{
-		background.ScreenCenter();
-		
 		music.Play(true);
 		music.SetVolume(0.75);
 		
@@ -50,7 +48,7 @@ public:
 			food.Reset();
 			score++;
 		}
-		else if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.spr_data.clip.x)
+		else if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.data.clip.x)
 		{
 			food.Reset(true);
 			score--;
@@ -109,7 +107,7 @@ public:
 public:
 	AudioClip music;
 
-	LONGLONG score = 0;
+	uint16_t score = 0;
 	float timer = 60;
 
 	Platform player;

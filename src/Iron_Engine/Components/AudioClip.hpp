@@ -61,19 +61,14 @@ public:
 
 	~AudioClip()
 	{
-		if (m_Data == AudioData::IRON_MUSIC)
-		{
-			Mix_FreeMusic(m_MusicClip);
-			m_MusicClip = nullptr;
-		}
-		else
-		{
-			Mix_FreeChunk(m_AudioClip);
-			m_AudioClip = nullptr;
-		}
+		Mix_FreeMusic(m_MusicClip);
+		m_MusicClip = nullptr;
+
+		Mix_FreeChunk(m_AudioClip);
+		m_AudioClip = nullptr;
 	}
 private:
-	AudioData m_Data;
+	AudioData& m_Data;
 
 	Mix_Music* m_MusicClip = nullptr;
 	Mix_Chunk* m_AudioClip = nullptr;

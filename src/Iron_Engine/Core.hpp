@@ -2,15 +2,13 @@
 
 //SDL2
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 //Dear ImGui
 #include <ImGui\imgui.h>
 #include <ImGui\imgui_impl_sdl.h>
 #include <ImGui\imgui_impl_sdlrenderer.h>
-//OpenGL
-#include <GL\GLU.h>
+
 #include <iostream>
 
 //WINDOW VARIABLES
@@ -63,50 +61,17 @@ namespace IronGL
 			exit(-1);
 		}
 
-		m_Context = SDL_GL_CreateContext(m_Window);
-		if (!m_Context)
-		{
-			TRACE("Couldn't Create a Context");
-			exit(-1);
-		}
-
-		if (SDL_GL_SetSwapInterval(ENABLE_VSYNC) < 0)
-		{
-			TRACE("Unable to set VSync!");
-			ERROR(SDL_GetError());
-		}
-
-		GLenum error = GL_NO_ERROR;
-
-		//Initialize Projection Matrix
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-
-		//Check for error
-		error = glGetError();
-		if (error != GL_NO_ERROR)
-		{
-			printf("Error initializing OpenGL! %s\n");
-			exit(-1);
-		}
-
-		//Initialize Modelview Matrix
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		//Check for error
-		error = glGetError();
-		if (error != GL_NO_ERROR)
-		{
-			printf("Error initializing OpenGL!\n");
-			exit(-1);
-		}
-
 		m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		if (!m_Renderer)
 		{
 			printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 			exit(-1);
+		}
+
+		if (SDL_RenderSetVSync(m_Renderer, ENABLE_VSYNC) < 0)
+		{
+			TRACE("Unable to set VSync!");
+			ERROR(SDL_GetError());
 		}
 
 		IMGUI_CHECKVERSION();

@@ -14,10 +14,10 @@ public:
 		score_sfx("res\\sounds\\score.wav"), fail_sfx("res\\sounds\\fail.wav"),
 		collider({0, 0})
 	{
-		collider = Collider(spr.spr_data.clip * 1.05);
+		collider = Collider(spr.data.clip * 0.95);
 		spr.SetGraphicSize(0.65);
 		spr.ScreenCenter();
-		spr.transform.position.y = -Random::random_value(spr.spr_data.clip.x * 1.5, spr.spr_data.clip.x * 2.5);
+		spr.transform.position.y = -Random::random_value(spr.data.clip.x * 1.5, spr.data.clip.x * 2.5);
 		spr.transform.position.x = WINDOW_WIDTH / 2;
 	}
 
@@ -39,8 +39,8 @@ public:
 	void Reset(bool failure = false)
 	{
 		spr.ScreenCenter();
-		spr.transform.position.y = -Random::random_value(spr.spr_data.clip.x * 1.5, spr.spr_data.clip.x * 2.5);
-		spr.transform.position.x = Random::random_value(spr.spr_data.clip.x, WINDOW_WIDTH - spr.spr_data.clip.x);
+		spr.transform.position.y = -Random::random_value(spr.data.clip.x, spr.data.clip.x * 2.5);
+		spr.transform.position.x = Random::random_value(spr.data.clip.x, WINDOW_WIDTH - spr.data.clip.x);
 
 		if (!failure) {
 			score_sfx.SetVolume(Random::random_value(0.75, 1.0));
