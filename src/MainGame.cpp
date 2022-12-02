@@ -43,40 +43,27 @@ public:
 		if (game_over)
 			return;
 
-		if (Golden::CollisionDetector::bounding_sqr(food.collider, player.collider))
+		if (Golden::CollisionDetector::DetectCollision(food.collider, player.collider))
 		{
 			food.Reset();
 			score++;
 		}
-		else if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.data.clip.x)
+		else if (food.spr.transform.position.y > WINDOW_HEIGHT + food.spr.data.bounds.x)
 		{
 			food.Reset(true);
 			score--;
 		}
 
-		timer -= delta_time;
+		timer -= time.delta;
 
-		player.Update(delta_time, input);
+		player.Update(time.delta, input);
 
-		food.Update(delta_time);
+		food.Update(time.delta);
 	}
 
-	//Process SDL2 Events (Input, Mouse Pos, etc...)
+	//Process SDL2 Events (Extra input related code...)
 	void ProcessEvents(const SDL_Event& e)
 	{
-		if (game_over)
-			return;
-		uint32_t key = e.key.keysym.sym;
-
-		switch (e.type)
-		{
-		case SDL_KEYDOWN:
-			input.keys[key] = true;
-			break;
-		case SDL_KEYUP:
-			input.keys[key] = false;
-			break;
-		}
 	}
 
 	//Every Frame ( Draw Images )

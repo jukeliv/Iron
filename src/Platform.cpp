@@ -1,24 +1,19 @@
 #pragma once
 
-#include "Iron_Engine/Entity.hpp"
-#include "Iron_Engine/Components/Sprite.hpp"
-#include "Iron_Engine/Math/Mathf.hpp"
-#include "Iron_Engine/Math/Random.hpp"
-#include "Iron_Engine/Utils/Input.hpp"
+#include <Iron_Engine/Engine.hpp>
 
 class Platform : public Entity
 {
 public:
 	Platform()
-		:spr("res\\images\\platform.png"), velocity(0.0, 0.0),
-		collider({ 0.0, 0.0 })
+		:spr("res\\images\\platform.png"), velocity(0.0),
+		collider({}, ColliderType::SquareCollider)
 	{
-		collider = Collider(spr.data.clip);
-
-		spr.SetGraphicSize(0.5);
+		spr.transform.scale = glm::vec2(0.5);
 		spr.ScreenCenter();
 		spr.transform.position.y += 277;
-		collider.position = spr.transform.position;
+
+		collider.bounds = spr.transform;
 	}
 
 	~Platform()
@@ -26,18 +21,17 @@ public:
 		spr.~Sprite();
 	}
 
-	Vec2 velocity;
 	void Update(const float& delta, Input& input)
 	{
-		collider.position = spr.transform.position;//YOU NEED TO UPDATE THE POSITION
+		collider.bounds = spr.transform;//YOU NEED TO UPDATE THE POSITION
 
 		velocity.x = input.getAxis(Axis::HORIZONTAL);
 
-		spr.transform.position += velocity * delta * 300;
+		spr.transform.position += velocity * delta * 300.0f;
 
-		Mathf::clamp(spr.transform.position.x, 0, WINDOW_WIDTH - spr.data.clip.x);
+		Mathf::clamp(spr.transform.position.x, 0, WINDOW_WIDTH - spr.data.bounds.x);
 
-		Mathf::lerp(spr.transform.z_rotation, velocity.x * 15, delta * 3.5);
+		Mathf::lerp(spr.transform.rotation, velocity.x * 15, delta * 3.5);
 	}
 
 	void Render()
@@ -45,6 +39,7 @@ public:
 		spr.Render();
 	}
 public:
+	glm::vec2 velocity;
 	Collider collider;
 	Sprite spr;
 };

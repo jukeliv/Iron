@@ -1,32 +1,37 @@
 #pragma once
+#include <glm/glm.hpp>
+#include <Iron_Engine/Components/Sprite.hpp>
 
-struct Collider
+enum class ColliderType {CircleCollider, SquareCollider};
+
+typedef struct Collider
 {
-	Collider(const Vec2& b)
-		:bounds(b), position(0,0){}
-	//Dont use transform, for now we dont need rotation :/
-	Vec2 position;
+	Collider(const Transform& _bounds, ColliderType _ct)
+		:bounds(_bounds), ct(_ct) {}
+	Transform bounds;	
 
-	Vec2 bounds;
-};
+	ColliderType ct;
+} Collider;
 
 namespace Golden {
 	class CollisionDetector
 	{
 	public:
-		static bool bounding_sqr(const Collider& a, const Collider& b)
-		{
-			return (b.position.x < a.position.x + a.bounds.x &&
-				b.position.x + b.bounds.x > a.position.x &&
-				b.position.y < a.position.y + a.bounds.y &&
-				b.position.y + b.bounds.y > a.position.y);
-		}
 
-		/*
-		* dont use this, is broken xd
-		static bool bounding_circle(const Sprite& a, const Sprite& b)
+		static bool DetectCollision(const Collider& a, const Collider& b)
 		{
-			return (Vec2::Distance(a.transform.position, b.transform.position) >= a.spr_data.w || Vec2::Distance(a.transform.position, b.transform.position) >= b.spr_data.w);
-		}*/
+			//Axis-Aligned Bounding Boxes
+			if (a.ct == ColliderType::SquareCollider && b.ct == ColliderType::SquareCollider) {
+				return (b.bounds.position.x < a.bounds.position.x + a.bounds.scale.x &&
+					b.bounds.position.x + b.bounds.scale.x > a.bounds.position.x &&
+					b.bounds.position.y < a.bounds.position.y + a.bounds.scale.y &&
+					b.bounds.position.y + b.bounds.scale.y > a.bounds.position.y);
+			}
+			//Circle Collision Detection
+			if (a.ct == ColliderType::CircleCollider && b.ct == ColliderType::CircleCollider)
+			{
+				return (glm::distance(a.bounds.position, b.bounds.position) < (a.bounds.scale.r + b.bounds.scale.r));
+			}
+		}
 	};
 }

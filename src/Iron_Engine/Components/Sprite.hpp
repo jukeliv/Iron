@@ -1,23 +1,24 @@
 #pragma once
 
-#include "Iron_Engine\Core.hpp"
+#include <Iron_Engine\Core.hpp>
 
-#include "Iron_Engine\Math\Vec2.hpp"
-
+#include "glm/glm.hpp"
 #include <string_view>
 
 typedef struct Transform
 {
 public:
-	Vec2 position = { 0,0 };
-	float z_rotation;
+	glm::vec2 position = { 0,0 };
+	glm::vec2 scale = { 1,1 };
+	float rotation;
 }Transform;
 
 typedef struct SpriteData
 {
 public:
 	SDL_RendererFlip flip;
-	Vec2 clip = { 0, 0 };
+	glm::vec2 bounds = { 0, 0 };
+	SDL_Rect* clip = NULL;//TODO: Implement this with the entire Sprite class
 }SpriteData;
 
 class Sprite
@@ -36,30 +37,13 @@ public:
 
 	void Render()
 	{
-		SDL_Rect renderQuad = { transform.position.x, transform.position.y, data.clip.x, data.clip.y };
-
-		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.z_rotation, NULL, data.flip);
+		SDL_Rect renderQuad = { transform.position.x, transform.position.y, data.bounds.x * transform.scale.x, data.bounds.y * transform.scale.y };
+		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.rotation, NULL, data.flip);
 	}
 
 	void ScreenCenter()
 	{
-		transform.position = { (float)WINDOW_WIDTH / 2 - (data.clip.x / 2), (float)WINDOW_HEIGHT / 2 - (data.clip.y / 2) };
-	}
-
-	void SetGraphicSize(const double& x)
-	{
-		data.clip *= x;
-	}
-
-	void SetGraphicSize(const Vec2& v)
-	{
-		data.clip = v;
-	}
-
-	void SetGraphicSize(const int& w, const int& h)
-	{
-		data.clip.y = h;
-		data.clip.x = w;
+		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y / 2) };
 	}
 public:
 	Transform transform;
@@ -79,8 +63,8 @@ private:
 		}
 
 		newTexture = SDL_CreateTextureFromSurface(IronGL::m_Renderer, loadedSurface);
-		data.clip.x = loadedSurface->w;
-		data.clip.y = loadedSurface->h;
+		data.bounds.x = loadedSurface->w;
+		data.bounds.y = loadedSurface->h;
 
 		if (!newTexture)
 		{

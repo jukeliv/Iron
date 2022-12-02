@@ -1,5 +1,5 @@
+#include <Iron_Engine/Engine.hpp>
 #include "MainGame.cpp"
-#include "Iron_Engine/Application.hpp"
 
 int main(int argc, char* argv[]) 
 {

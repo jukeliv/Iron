@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Iron_Engine/Core.hpp"
-#include "Iron_Engine/Game.hpp"
-#include "Iron_Engine/Utils/Timer.hpp"
+#include <Iron_Engine/Core.hpp>
+#include <Iron_Engine/Game.hpp>
+#include <Iron_Engine/Utils/Timer.hpp>
 
 #include <future>
 
@@ -47,8 +47,17 @@ public:
 			{
 				quit = e.type == SDL_QUIT;
 
-				if(e.key.keysym.sym == SDLK_r)
-					SetCurrentGame<MainGame>();
+				uint32_t key = e.key.keysym.sym;
+
+				switch (e.type)
+				{
+				case SDL_KEYDOWN:
+					game->input.keys[key] = true;
+					break;
+				case SDL_KEYUP:
+					game->input.keys[key] = false;
+					break;
+				}
 
 				game->ProcessEvents(e);
 				ImGui_ImplSDL2_ProcessEvent(&e);
@@ -77,8 +86,7 @@ public:
 			}
 
 			fps_timer.end_timer();
-
-			game->delta_time = (double)fps_timer.elapsed_time() / 1000;
+			game->time.step((double)fps_timer.elapsed_time() / 1000);
 		}
 
 		game->~Game();
