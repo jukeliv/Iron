@@ -21,11 +21,11 @@ public:
 			else
 				return 0;
 
-		case Axis::VERTICAL:
+		case Axis::VERTICAL: // y is negative, so i switch up the values :/
 			if (keys[SDLK_w] || keys[SDLK_UP])
-				return 1;
-			else if (keys[SDLK_s] || keys[SDLK_DOWN])
 				return -1;
+			else if (keys[SDLK_s] || keys[SDLK_DOWN])
+				return 1;
 			else
 				return 0;
 

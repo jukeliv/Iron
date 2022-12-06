@@ -3,8 +3,6 @@
 //IRON
 #include <Iron_Engine/Engine.hpp>
 
-enum class Event{SwitchGame};
-
 class Game
 {
 public:

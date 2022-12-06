@@ -41,9 +41,9 @@ public:
 		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.rotation, NULL, data.flip);
 	}
 
-	void ScreenCenter()
+	inline void ScreenCenter()
 	{
-		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y / 2) };
+		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x * transform.scale.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y * transform.scale.y / 2) };
 	}
 public:
 	Transform transform;

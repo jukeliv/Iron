@@ -2,20 +2,23 @@
 class Mathf
 {
 public:
-	static void lerp(float& a, const double& b, const double& t)
+	inline static void lerp(float& a, const double& b, const double& t)
 	{
 		a += (b - a) * t;
 	}
 
-	static void clamp(float& a, const double& min, const double& max)
+	inline static void slerp(float& a, const double& b, const double& t)
 	{
-		if (a < min)
-			a = min;
-		else if (a > max)
-			a = max;
+		double _t = 1.0f - (1.0f - t) * (1.0f - t);
+		a += (b - a) * _t;
 	}
 
-	static void map(float& value,
+	inline static void clamp(float& a, const double& min, const double& max)
+	{
+		a = (a < min ? a = min : (a > max ? max : a));
+	}
+
+	inline static void map(float& value,
 		const float& src_min,
 		const float& src_max,
 		const float& dst_min,

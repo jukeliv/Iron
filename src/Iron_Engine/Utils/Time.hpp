@@ -2,12 +2,12 @@
 class Time
 {
 public:
-	void step(const double& _delta)
+	void step(const float& _delta)
 	{
 		delta = _delta;
 		elapsed += _delta;
 	}
 public:
-	double elapsed = 0;
-	double delta = 0;
+	float elapsed = 0;
+	float delta = 0;
 };

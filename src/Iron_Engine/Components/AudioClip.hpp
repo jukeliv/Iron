@@ -5,6 +5,19 @@
 
 enum class AudioData { IRON_MUSIC, IRON_SFX };
 
+typedef struct AudioConfig
+{
+public:
+	AudioConfig(bool _loop, bool _force)
+		:loop(_loop), force(_force)
+	{
+
+	}
+public:
+	bool loop = false;
+	bool force = false;
+}AudioConfig;
+
 class AudioClip
 {
 public:
@@ -20,6 +33,8 @@ public:
 				ERROR(path.data());
 				ERROR("SDL_MIXER ERROR: ");
 				ERROR(Mix_GetError());
+
+				exit(-1);
 			}
 		}
 		else
@@ -28,31 +43,35 @@ public:
 
 			if (!m_AudioClip)
 			{
-				ERROR("Failed to load sound effect! SDL_mixer Error:");
+				ERROR("Failed to load music!");
+				ERROR(path.data());
+				ERROR("SDL_MIXER ERROR: ");
 				ERROR(Mix_GetError());
+
+				exit(-1);
 			}
 		}
 	}
 
-	void Play(bool loop,bool force = false)
+	inline void Play(AudioConfig* configuration = NULL)
 	{
 		if (m_Data == AudioData::IRON_MUSIC)
 		{
-			if (Mix_PlayingMusic() == 0 || force)
+			if (Mix_PlayingMusic() == 0 || configuration->force)
 			{
-				Mix_PlayMusic(m_MusicClip, loop?-1:0);
+				Mix_PlayMusic(m_MusicClip, configuration->loop?-1:0);
 			}
 		}
 		else
 		{
-			Mix_PlayChannel(-1, m_AudioClip, loop?-1:0);
+			Mix_PlayChannel(-1, m_AudioClip, configuration->loop ?-1:0);
 		}
 	}
 
 	//The volume goes from 0.0 to 1.0
-	void SetVolume(double v)
+	inline void SetVolume(double v)
 	{
-		int volume = std::ceil((v * v) * MIX_MAX_VOLUME);
+		uint32_t volume = std::ceil(powf(v, 2) * MIX_MAX_VOLUME);
 
 		if (m_Data == AudioData::IRON_MUSIC)
 			Mix_VolumeMusic(volume);

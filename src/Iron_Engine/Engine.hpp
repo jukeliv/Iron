@@ -1,16 +1,21 @@
-#pragma once
-//Import every "Iron" file here
+//Import every "Iron/Golden" file here
 //ONLY FOR CLIENT USE
 
+//GOLDEN
+#include <Iron_Engine/Golden/Collider.hpp>
+#include <Iron_Engine/Golden/Ziffy.h>
+//COMPONENTS
 #include <Iron_Engine/Components/AudioClip.hpp>
 #include <Iron_Engine/Components/Sprite.hpp>
+//MATH
 #include <Iron_Engine/Math/Mathf.hpp>
 #include <Iron_Engine/Math/Random.hpp>
+//UTILS
 #include <Iron_Engine/Utils/Input.hpp>
 #include <Iron_Engine/Utils/Timer.hpp>
 #include <Iron_Engine/Utils/Time.hpp>
+//IRON
 #include <Iron_Engine/Application.hpp>
 #include <Iron_Engine/Core.hpp>
-#include <Iron_Engine/Entity.hpp>
+#include <Iron_Engine/GameObject.hpp>
 #include <Iron_Engine/Game.hpp>
-#include <Iron_Engine/Golden/CollisionDetector.hpp>

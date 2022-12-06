@@ -10,6 +10,7 @@
 #include <ImGui\imgui_impl_sdlrenderer.h>
 
 #include <iostream>
+#include <assert.h>
 
 //WINDOW VARIABLES
 #define WINDOW_WIDTH 640
@@ -19,7 +20,7 @@
 
 #define ENABLE_VSYNC true
 
-#define FPS_CAP 60
+#define FPS_CAP 144
 #define TICKS_PER_FRAME (1000 / FPS_CAP)
 
 //LOGGER
@@ -38,7 +39,6 @@ namespace IronGL
 	SDL_Window* m_Window;
 	SDL_Surface* m_ScreenSurface;
 	SDL_Renderer* m_Renderer;
-	SDL_GLContext m_Context;
 
 	void Init()
 	{
@@ -48,8 +48,6 @@ namespace IronGL
 			ERROR(SDL_GetError());
 			exit(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO));
 		}
-
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 
 		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
@@ -74,27 +72,21 @@ namespace IronGL
 			ERROR(SDL_GetError());
 		}
 
-		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		Uint32 configFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableSetMousePos | ImGuiConfigFlags_NavEnableGamepad;
-		io.ConfigFlags = configFlags;
 		
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 
 		// Setup Platform/Renderer backends
-		if (!ImGui_ImplSDL2_InitForSDLRenderer(m_Window, m_Renderer))
-		{
-			ERROR("ImGui with SDLRenderer could not initialize:");
-		}
-		if (!ImGui_ImplSDLRenderer_Init(m_Renderer))
+		if (!ImGui_ImplSDL2_InitForSDLRenderer(m_Window, m_Renderer) || !ImGui_ImplSDLRenderer_Init(m_Renderer))
 		{
 			ERROR("ImGui could not initialize Renderer");
+
+			exit(-1);
 		}
 
-		Uint32 imgFlags = IMG_INIT_PNG ;
-		if (!(IMG_Init(imgFlags) & imgFlags))
+		if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 		{
 			ERROR("SDL_image could not initialize! SDL_image Error:");
 			ERROR(IMG_GetError());
@@ -110,9 +102,8 @@ namespace IronGL
 		}
 
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
-
-		SDL_FillRect(m_ScreenSurface, NULL, SDL_MapRGB(m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 	}
+
 	void Shutdown()
 	{
 		//Destroy window
@@ -120,6 +111,7 @@ namespace IronGL
 		m_Renderer = NULL;
 		SDL_DestroyWindow(m_Window);
 		m_Window = NULL;
+		m_ScreenSurface = NULL;
 		SDL_Quit();
 
 		ImGui_ImplSDLRenderer_Shutdown();

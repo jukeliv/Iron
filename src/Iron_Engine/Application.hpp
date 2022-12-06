@@ -1,10 +1,6 @@
 #pragma once
 
-#include <Iron_Engine/Core.hpp>
-#include <Iron_Engine/Game.hpp>
-#include <Iron_Engine/Utils/Timer.hpp>
-
-#include <future>
+#include <Iron_Engine/Engine.hpp>
 
 class Application
 {
@@ -18,6 +14,7 @@ public:
 	{
 		IronGL::Init();
 
+		SDL_FillRect(IronGL::m_ScreenSurface, NULL, SDL_MapRGB(IronGL::m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 		SDL_UpdateWindowSurface(IronGL::m_Window);
 	}
 
@@ -63,7 +60,7 @@ public:
 				ImGui_ImplSDL2_ProcessEvent(&e);
 			}
 
-			SDL_SetRenderDrawColor(IronGL::m_Renderer, 171, 0x0, 0x0, 0x0);
+			SDL_SetRenderDrawColor(IronGL::m_Renderer, 5, 5, 60, 0xFF);
 
 			game->Render();
 
@@ -86,7 +83,7 @@ public:
 			}
 
 			fps_timer.end_timer();
-			game->time.step((double)fps_timer.elapsed_time() / 1000);
+			game->time.step((float)fps_timer.elapsed_time() / 1000);
 		}
 
 		game->~Game();
