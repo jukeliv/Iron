@@ -12,20 +12,23 @@ public:
 	}
 
 	//When the program is shuting down
-	virtual ~Game(){}
+	virtual ~Game() {}
 
 	//Every Frame ( Manage Logic )
-	virtual void Update(){}
+	virtual void Update() {}
 
-	virtual void ProcessEvents(const SDL_Event& e){}
+	//Every Frame ( Process extra SDL_Events for input and more )
+	virtual void ProcessEvents(const SDL_Event& e) {}
 
 	//Every Frame ( Draw Images )
-	virtual void Render(){}
+	virtual void Render() {}
 
 	//Every Frame ( Draw UI with Dear ImGui )
 	virtual void RenderUI() {}
 
 public:
+	/*DO NOT REMOVE THESE VARIABLES!!!*/
+
 	Time time;
-	Input input;//DO NOT REMOVE THIS!!!
+	Input input;
 };

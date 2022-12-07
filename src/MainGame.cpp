@@ -37,10 +37,6 @@ public:
 
 		handler.Render();
 	}
-
-	void RenderUI()
-	{
-	}
 public:
 	Mascot mascot;
 	ObstacleHandler handler;

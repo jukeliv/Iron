@@ -7,6 +7,7 @@ class Timer
 {
 public:
 	Timer()
+		: end(NULL), start(NULL)
 	{
 
 	}

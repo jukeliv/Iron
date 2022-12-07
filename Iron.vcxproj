@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
+    <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\ImGui\imconfig.h" />
     <ClInclude Include="include\ImGui\imgui.h" />
@@ -289,7 +290,6 @@
     <ClInclude Include="src\Iron_Engine\Engine.hpp" />
     <ClInclude Include="src\Iron_Engine\Golden\Collider.hpp" />
     <ClInclude Include="src\Iron_Engine\Golden\Ziffy.h" />
-    <ClInclude Include="src\Iron_Engine\Math\Mathf.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Random.hpp" />
     <ClInclude Include="src\Iron_Engine\GameObject.hpp" />
     <ClInclude Include="src\Iron_Engine\Game.hpp" />

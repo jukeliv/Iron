@@ -34,6 +34,8 @@
 #define ERROR(x)
 #endif // !DISTRIBUTION_BUILD
 
+//TODO:  Implement a new audio library/framework
+
 namespace IronGL
 {
 	SDL_Window* m_Window;
@@ -42,14 +44,15 @@ namespace IronGL
 
 	void Init()
 	{
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+		unsigned int flags = SDL_INIT_VIDEO/*| SDL_INIT_AUDIO*/;
+		if (SDL_Init(flags) < 0)
 		{
 			ERROR("SDL could not initialize! SDL_Error:");
 			ERROR(SDL_GetError());
-			exit(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO));
+			exit(SDL_Init(flags));
 		}
 
-		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
 		if (!m_Window)
 		{
@@ -94,12 +97,13 @@ namespace IronGL
 			exit(-1);
 		}
 
+		/*
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{
 			ERROR("SDL_mixer could not initialize! SDL_mixer Error:");
 			ERROR(Mix_GetError());
 			exit(-1);
-		}
+		}*/
 
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}

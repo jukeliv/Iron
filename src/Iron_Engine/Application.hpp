@@ -61,7 +61,8 @@ public:
 			}
 
 			SDL_SetRenderDrawColor(IronGL::m_Renderer, 5, 5, 60, 0xFF);
-
+			SDL_RenderClear(IronGL::m_Renderer);
+			
 			game->Render();
 
 			ImGui_ImplSDLRenderer_NewFrame();
@@ -73,8 +74,6 @@ public:
 
 			ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 			SDL_RenderPresent(IronGL::m_Renderer);
-			
-			SDL_RenderClear(IronGL::m_Renderer);
 
 			Uint32 cap = cap_timer.elapsed_time();
 			if (cap < TICKS_PER_FRAME)

@@ -1,6 +1,6 @@
 #pragma once
-#include "Mathf.hpp"
 
+#include "Matloon.hpp"
 #include <iostream>
 
 class Random
@@ -8,10 +8,12 @@ class Random
 public:
 	static float random_value(const double& min, const double& max, const uint32_t& seed = 0)
 	{
-		//if (seed)
-			//do something
+		if (seed)
+			srand(seed);
+
 		float r = (float)rand() / RAND_MAX;
-		Mathf::map(r, -1, 1, min, max);
+
+		r = Matloon::map(r, 0, 1, min, max);
 
 		return r;
 	}

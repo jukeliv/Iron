@@ -18,7 +18,7 @@ typedef struct SpriteData
 public:
 	SDL_RendererFlip flip;
 	glm::vec2 bounds = { 0, 0 };
-	SDL_Rect* clip = NULL;//TODO: Implement this with the entire Sprite class
+	SDL_Rect clip = {NULL};//TODO: Implement this with the entire Sprite class
 }SpriteData;
 
 class Sprite
@@ -37,8 +37,19 @@ public:
 
 	void Render()
 	{
-		SDL_Rect renderQuad = { transform.position.x, transform.position.y, data.bounds.x * transform.scale.x, data.bounds.y * transform.scale.y };
-		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, NULL, &renderQuad, transform.rotation, NULL, data.flip);
+		clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
+
+		data.clip.w = data.clip.w == 0? data.bounds.x : data.clip.w;
+		data.clip.h = data.clip.h == 0 ? data.bounds.y : data.clip.h;
+
+		SDL_Rect renderQuad =
+		{   transform.position.x, transform.position.y, 
+			data.clip.w, data.clip.h };
+		
+		renderQuad.w *= transform.scale.x;
+		renderQuad.h *= transform.scale.y;
+
+		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
 	}
 
 	inline void ScreenCenter()
@@ -50,6 +61,7 @@ public:
 	SpriteData data;
 private:
 	SDL_Texture* m_Tex;
+	SDL_Rect* clip = NULL;
 private:
 	SDL_Texture* load(const char* path)
 	{

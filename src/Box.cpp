@@ -11,6 +11,7 @@ public:
 		sprite.transform.scale = glm::vec2(4);
 		Reset();
 		sprite.transform.position.x = x;
+		sprite.data.clip.w = 12;
 	}
 
 	void Update(const Time& time)
@@ -25,7 +26,7 @@ public:
 
 	void Reset()
 	{
-		sprite.transform.position.y = Random::random_value(0, WINDOW_HEIGHT - sprite.data.bounds.y);
+		sprite.transform.position.y = Random::random_value(0, (int)WINDOW_HEIGHT - sprite.data.bounds.y);
 		sprite.transform.position.x = WINDOW_WIDTH;
 	}
 
