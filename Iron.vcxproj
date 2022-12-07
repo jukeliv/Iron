@@ -172,6 +172,7 @@
     <ClCompile Include="src\Box.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mascot.cpp" />
+    <ClCompile Include="src\ObstacleHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\SDL_config.h.cmake" />

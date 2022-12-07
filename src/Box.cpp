@@ -5,15 +5,28 @@
 class Box : GameObject
 {
 public:
-	Box()
+	Box(float x)
 		:sprite("res/images/slime.png"), collider(Transform(), Golden::ColliderType::SquareCollider)
 	{
 		sprite.transform.scale = glm::vec2(4);
+		Reset();
+		sprite.transform.position.x = x;
 	}
 
-	void Update()
+	void Update(const Time& time)
 	{
 		collider.step(sprite);
+
+		if (sprite.transform.position.x + sprite.data.bounds.x < 0)
+			Reset();
+
+		sprite.transform.position.x-=300* time.delta;
+	}
+
+	void Reset()
+	{
+		sprite.transform.position.y = Random::random_value(0, WINDOW_HEIGHT - sprite.data.bounds.y);
+		sprite.transform.position.x = WINDOW_WIDTH;
 	}
 
 	void Render()

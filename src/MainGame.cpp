@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Mascot.cpp"
-#include "Box.cpp"
+#include "ObstacleHandler.cpp"
 
 class MainGame : public Game
 {
@@ -15,14 +15,13 @@ public:
 	~MainGame()
 	{
 		mascot.~Mascot();
-		box.~Box();
 	}
 
 	//Every Frame ( Manage Logic )
 	void Update()
 	{
 		mascot.Update(input, time);
-		box.Update();
+		handler.Update(time);
 	}
 
 	//Process SDL2 Events (Extra input related code...)
@@ -33,15 +32,16 @@ public:
 	//Every Frame ( Draw Images )
 	void Render()
 	{
-		if (!mascot.collider.CheckColliding(box.collider))
+		if(!handler.isColliding(mascot.collider))
 			mascot.Render();
-		box.Render();
+
+		handler.Render();
 	}
 
 	void RenderUI()
 	{
 	}
 public:
-	Box box;
 	Mascot mascot;
+	ObstacleHandler handler;
 };

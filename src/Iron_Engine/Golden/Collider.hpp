@@ -16,26 +16,21 @@ namespace Golden
 
 		bool CheckColliding(const Collider& other)
 		{
-		//	if (ct != other.ct)
-		//	{
-		//		ERROR("GOLDEN CAN'T MANAGE MULTIPLE COLLIDER TYPES");
-		//		return false;
-		//	}
+			if (ct != other.ct)
+				ERROR("GOLDEN CAN'T MANAGE MULTIPLE COLLIDER TYPES");
 
-		//	//Axis-Aligned Bounding Boxes
-		//	if (ct == ColliderType::SquareCollider) {
+			//Axis-Aligned Bounding Boxes
+			if (ct == ColliderType::SquareCollider) {
 				return (other.bounds.position.x < bounds.position.x + bounds.scale.x &&
 					other.bounds.position.x + other.bounds.scale.x > bounds.position.x &&
 					other.bounds.position.y < bounds.position.y + bounds.scale.y &&
 					other.bounds.position.y + other.bounds.scale.y > bounds.position.y);
-			//}
-			////Circle Collision Detection
-			//if (ct == ColliderType::CircleCollider)
-			//{
-			//	return (glm::distance(bounds.position, other.bounds.position) < (bounds.scale.r + other.bounds.scale.r));
-			//}
+			}
+			//Circle Collision Detection
+			if (ct == ColliderType::CircleCollider)
+				return (glm::distance(bounds.position, other.bounds.position) < (bounds.scale.r + other.bounds.scale.r));
 
-			//return false;
+			return false;
 		}
 
 		inline void step(const Sprite& _spr)
