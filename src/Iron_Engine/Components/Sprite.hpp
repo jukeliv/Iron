@@ -18,7 +18,7 @@ typedef struct SpriteData
 public:
 	SDL_RendererFlip flip;
 	glm::vec2 bounds = { 0, 0 };
-	SDL_Rect clip = {NULL};//TODO: Implement this with the entire Sprite class
+	SDL_Rect clip = {NULL};
 }SpriteData;
 
 class Sprite
