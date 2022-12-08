@@ -13,6 +13,7 @@ public:
 		sprite.ScreenCenter();
 
 		sprite.transform.position.x = 0;
+		sprite.data.clip.w = sprite.data.clip.h = 21;
 	}
 
 	void Update(Input& input, const Time& time)

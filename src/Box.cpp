@@ -11,7 +11,8 @@ public:
 		sprite.transform.scale = glm::vec2(4);
 		Reset();
 		sprite.transform.position.x = x;
-		sprite.data.clip.w = 12;
+		sprite.data.clip.w = sprite.data.clip.h = 21;
+		sprite.data.clip.x = sprite.data.clip.y = 21;
 	}
 
 	void Update(const Time& time)
