@@ -14,7 +14,7 @@ public:
 
 		animator.spr.transform.position.x = 0;
 
-		animator.AddByRects("blink", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21} });
+		animator.AddByRects("blink", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21}, {0, 21, 21, 21} });
 
 		animator.PlayAnim("blink");
 	}

@@ -5,10 +5,11 @@
 
 typedef struct AnimationData
 {
-	AnimationData(std::string_view _prefix, std::vector<SDL_Rect> _rects)
-		:prefix(_prefix.data()), rects(_rects){}
+	AnimationData(std::string_view _prefix, std::vector<SDL_Rect> _rects, bool _loops = true)
+		:prefix(_prefix.data()), rects(_rects), loops(_loops){}
 	std::string prefix;
 	std::vector<SDL_Rect> rects;
+	bool loops;
 }AnimationData;
 
 class Animator
@@ -19,9 +20,9 @@ public:
 	{
 	}
 
-	void AddByRects(std::string_view prefix, std::vector<SDL_Rect> rects)
+	void AddByRects(std::string_view prefix, std::vector<SDL_Rect> rects, bool loops = true)
 	{
-		AnimationData data(prefix, rects);
+		AnimationData data(prefix, rects, loops);
 		animations.push_back(data);
 	}
 
@@ -63,7 +64,14 @@ public:
 		{
 			cur_rect++;
 
-			cur_rect = Matloon::clamp(cur_rect, 0, animations[anim_index].rects.size()-1);
+
+			if (cur_rect > animations[anim_index].rects.size() - 1)
+			{
+				if (animations[anim_index].loops)
+					cur_rect = 0;
+				else
+					cur_rect = Matloon::clamp(cur_rect, 0, animations[anim_index].rects.size() - 1);
+			}
 
 			time = 0;
 		}
