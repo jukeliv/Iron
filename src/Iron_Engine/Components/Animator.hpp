@@ -5,24 +5,25 @@
 
 typedef struct AnimationData
 {
-	AnimationData(std::string_view _prefix, std::vector<SDL_Rect> _rects, bool _loops = true)
-		:prefix(_prefix.data()), rects(_rects), loops(_loops){}
+	AnimationData(std::string_view _prefix, std::vector<SDL_Rect> _rects, float _framerate, bool _loops = true)
+		:prefix(_prefix.data()), rects(_rects), loops(_loops),framerate(_framerate){}
 	std::string prefix;
 	std::vector<SDL_Rect> rects;
+	float framerate;
 	bool loops;
 }AnimationData;
 
 class Animator
 {
 public:
-	Animator(std::string_view path)
-		: spr(path), time(0)
+	Animator(Sprite& sprite)
+		: spr(sprite), time(0)
 	{
 	}
 
-	void AddByRects(std::string_view prefix, std::vector<SDL_Rect> rects, bool loops = true)
+	void AddByRects(std::string_view prefix, std::vector<SDL_Rect> rects, float framerate = 60, bool loops = true)
 	{
-		AnimationData data(prefix, rects, loops);
+		AnimationData data(prefix, rects, framerate, loops);
 		animations.push_back(data);
 	}
 
@@ -59,11 +60,10 @@ public:
 			return;
 
 		time += _time.delta;
-
-		if (time > anim_index + 1 && time < anim_index + 2)
+		float rate = (float)1 / animations[anim_index].framerate;
+		if (time > rate && time < rate + 1)
 		{
 			cur_rect++;
-
 
 			if (cur_rect > animations[anim_index].rects.size() - 1)
 			{
@@ -79,7 +79,7 @@ public:
 		spr.data.clip = animations[anim_index].rects[cur_rect];
 	}
 public:
-	Sprite spr;
+	Sprite& spr;
 	float time = 0;
 	std::string anim = "";
 	int anim_index = 0;
