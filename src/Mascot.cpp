@@ -6,32 +6,36 @@ class Mascot : GameObject
 {
 public:
 	Mascot()
-		:sprite("res/images/slime.png"), collider(Transform(),Golden::ColliderType::SquareCollider),
+		:animator("res/images/slime.png"), collider(Transform(),Golden::ColliderType::SquareCollider),
 		vel(0)
 	{
-		sprite.transform.scale = glm::vec2(4);
-		sprite.ScreenCenter();
+		animator.spr.transform.scale = glm::vec2(4);
+		animator.spr.ScreenCenter();
 
-		sprite.transform.position.x = 0;
-		sprite.data.clip.w = sprite.data.clip.h = 21;
+		animator.spr.transform.position.x = 0;
+
+		animator.AddByRects("blink", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21} });
+
+		animator.PlayAnim("blink");
 	}
 
 	void Update(Input& input, const Time& time)
 	{
-		collider.step(sprite.transform.position, glm::vec2(24));
+		animator.step(time);
+		collider.step(animator.spr.transform.position, glm::vec2(24));
 
 		vel.y = input.keys[SDLK_q]?-1:1;
 
-		sprite.transform.position += Golden::Ziffy::cal_velocity(vel, 30, time.delta);
+		animator.spr.transform.position += Golden::Ziffy::cal_velocity(vel, 30, time.delta);
 	}
 
 	void Render()
 	{
-		sprite.Render();
+		animator.spr.Render();
 	}
 
 public:
-	Sprite sprite;
+	Animator animator;
 	Golden::Collider collider;
 	glm::vec2 vel;
 };

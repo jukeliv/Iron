@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
+    <ClInclude Include="src\Iron_Engine\Components\Animator.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\ImGui\imconfig.h" />

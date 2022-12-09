@@ -7,6 +7,7 @@
 //COMPONENTS
 #include <Iron_Engine/Components/AudioClip.hpp>
 #include <Iron_Engine/Components/Sprite.hpp>
+#include <Iron_Engine/Components/Animator.hpp>
 //MATH
 #include <Iron_Engine/Math/Matloon.hpp>
 #include <Iron_Engine/Math/Random.hpp>
