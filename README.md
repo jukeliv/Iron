@@ -10,7 +10,7 @@ Iron is a 2D Open Source lightweight "Game Engine" made with SDL 2
 ### if you are doing this, is cuz you want to distribute your project, so remember, use "Distro" to compile
 - Hit F5 for start building the project
 - It it's going to compile inside "bin\Distro-x64\$(ProjectName)\"
-- in that path you paste all the dll files inside "Iron"
+- in that path you paste all the dll files inside that path
 - and you paste the resource "res" folder inside the same path
 
 AND YOU ARE READY TO DISTRIBUTE YOUR SOFTWARE :)
