@@ -6,36 +6,45 @@ class Mascot : GameObject
 {
 public:
 	Mascot()
-		:animator("res/images/slime.png"), collider(Transform(),Golden::ColliderType::SquareCollider),
+		:sprite("res/images/slime.png"), collider(Transform(),Golden::ColliderType::SquareCollider),
 		vel(0)
 	{
-		animator.spr.transform.scale = glm::vec2(4);
-		animator.spr.ScreenCenter();
+		animator = std::make_unique<Animator>(sprite);
+		sprite.transform.scale = glm::vec2(4);
+		sprite.ScreenCenter();
 
-		animator.spr.transform.position.x = 0;
+		sprite.transform.position.x = 0;
 
-		animator.AddByRects("idle", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21}, {0, 21, 21, 21} });
+		animator->AddByRects("idle", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21}, {0, 21, 21, 21} }, 3);
 
-		animator.PlayAnim("idle");
+		animator->PlayAnim("idle");
 	}
 
 	void Update(Input& input, const Time& time)
 	{
-		animator.step(time);
-		collider.step(animator.spr.transform.position, glm::vec2(24));
+		animator->step(time);
+		collider.step(sprite.transform.position, glm::vec2(24));
 
 		vel.y = input.keys[SDLK_q]?-1:1;
 
-		animator.spr.transform.position += Golden::Ziffy::cal_velocity(vel, 30, time.delta);
+		sprite.transform.position += Golden::Ziffy::cal_velocity(vel, 30, time.delta);
 	}
 
 	void Render()
 	{
-		animator.spr.Render();
+		sprite.Render();
+	}
+
+	~Mascot()
+	{
+		animator.release();
+		delete animator.get();
 	}
 
 public:
-	Animator animator;
+	std::unique_ptr<Animator> animator;
+	Sprite sprite;
+
 	Golden::Collider collider;
 	glm::vec2 vel;
 };
