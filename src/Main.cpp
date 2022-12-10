@@ -14,4 +14,6 @@ int main(int argc, char* argv[])
 	app.Init();
 	app.SetCurrentGame<MainGame>();
 	app.Run();
+        exit(0);
+
 }
