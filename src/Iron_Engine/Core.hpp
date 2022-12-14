@@ -5,7 +5,7 @@
 #include <SDL_audio.h>
 #include <SDL_image.h>
 //MiniAudio
-//#include "miniaudio.h"
+#include "miniaudio.h"
 
 #define CHANNELS    2               /* Setup Stereo Audio. */
 #define SAMPLE_RATE 48000
@@ -47,7 +47,7 @@ namespace IronGL
 	SDL_Surface* m_ScreenSurface;
 	SDL_Renderer* m_Renderer;
 
-	/*START - MINIAUDIO
+	//START - MINIAUDIO
 	static ma_engine g_Engine;
 	SDL_AudioDeviceID deviceID;
 
@@ -57,7 +57,7 @@ namespace IronGL
 		ma_uint32 bufferSizeInFrames = (ma_uint32)bufferSizeInBytes / ma_get_bytes_per_frame(ma_format_f32, ma_engine_get_channels(&g_Engine));
 		ma_engine_read_pcm_frames(&g_Engine, pBuffer, bufferSizeInFrames, NULL);
 	}
-	//END - MINIAUDIO*/
+	//END - MINIAUDIO
 
 	void Init()
 	{
@@ -114,7 +114,7 @@ namespace IronGL
 			exit(-1);
 		}
 
-		/*Miniaudio
+		//Miniaudio
 		ma_result result;
 		ma_engine_config engineConfig = ma_engine_config_init();
 
@@ -127,16 +127,16 @@ namespace IronGL
 
 		result = ma_engine_init(&engineConfig, &g_Engine);
 		if (result != MA_SUCCESS) {
-			printf("Failed to initialize audio engine.");
+			ERROR("Failed to initialize audio engine.");
 			exit(-1);
 		}
 
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0) {
-			printf("Failed to initialize SDL sub-system.");
+			ERROR("Failed to initialize SDL sub-system.");
 			exit(-1);
 		}
 
-		MA_ZERO_OBJECT(&desiredSpec);
+		//MA_ZERO_OBJECT(&desiredSpec);
 		desiredSpec.freq = ma_engine_get_sample_rate(&g_Engine);
 		desiredSpec.format = AUDIO_F32;
 		desiredSpec.channels = ma_engine_get_channels(&g_Engine);
@@ -150,7 +150,7 @@ namespace IronGL
 			exit(-1);
 		}
 
-		SDL_PauseAudioDevice(deviceID, 0);*/
+		SDL_PauseAudioDevice(deviceID, 0);
 
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}
@@ -158,8 +158,8 @@ namespace IronGL
 	void Shutdown()
 	{
 		//Unitialize MiniSound
-		//ma_engine_uninit(&g_Engine);
-		//SDL_CloseAudioDevice(deviceID);
+		ma_engine_uninit(&g_Engine);
+		SDL_CloseAudioDevice(deviceID);
 		//Destroy window
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = NULL;

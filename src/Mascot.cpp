@@ -2,7 +2,6 @@
 
 #include <Iron_Engine/Engine.hpp>
 #include <Iron_Engine/Golden/RigidBody.hpp>
-#include <box2d/box2d.h>
 
 class Mascot : GameObject
 {

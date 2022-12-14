@@ -8,7 +8,9 @@ class MainGame : public Game
 public:
 	//First frame after initializing SDL 2
 	MainGame()
+		:clip("res/music/FutureWave.mp3")
 	{
+		clip.Play(new AudioConfig(true));
 	}
 
 	//When the program is shuting down
@@ -40,4 +42,5 @@ public:
 public:
 	Mascot mascot;
 	ObstacleHandler handler;
+	AudioClip clip;
 };

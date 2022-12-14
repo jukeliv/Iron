@@ -1,4 +1,3 @@
-/*
 #pragma once
 
 #include <Iron_Engine\Core.hpp>
@@ -46,4 +45,4 @@ public:
 	}
 private:
 	ma_sound g_Sound;
-};*/
+};

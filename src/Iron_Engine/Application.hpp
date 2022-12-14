@@ -21,18 +21,9 @@ public:
 	template <typename T>
 	void SetCurrentGame()
 	{
-		try {
-			game.release();
-			game.reset();
-			game = std::make_unique<T>();
-
-			if(game.get() == nullptr)
-				throw("ERROR LOADING SCENE");
-		}
-		catch (const char* e)
-		{
-			ERROR(e);
-		}
+		game.release();
+		game.reset();
+		game = std::make_unique<T>();
 	}
 
 	void Run()
