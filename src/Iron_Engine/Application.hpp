@@ -18,12 +18,12 @@ public:
 		SDL_UpdateWindowSurface(IronGL::m_Window);
 	}
 
-	template <typename G>
+	template <typename T>
 	void SetCurrentGame()
 	{
 		game.release();
 		game.reset();
-		game = std::make_unique<G>();
+		game = std::make_unique<T>();
 	}
 
 	void Run()

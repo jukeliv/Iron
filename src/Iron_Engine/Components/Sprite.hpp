@@ -24,8 +24,8 @@ public:
 class Sprite
 {
 public:
-	Sprite(std::string_view path)
-		: m_Tex(load(path.data()))
+	Sprite(Transform& _transform, std::string_view path)
+		: m_Tex(load(path.data())), transform(_transform)
 	{
 	}
 
@@ -57,7 +57,7 @@ public:
 		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x * transform.scale.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y * transform.scale.y / 2) };
 	}
 public:
-	Transform transform;
+	Transform& transform;
 	SpriteData data;
 private:
 	SDL_Texture* m_Tex;

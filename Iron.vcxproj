@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -81,12 +81,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PreprocessorDefinitions>MA_NO_DEVICE_IO;MINIAUDIO_IMPLEMENTATION;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,7 +102,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -115,6 +114,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PreprocessorDefinitions>NDEBUG;MA_NO_DEVICE_IO;MINIAUDIO_IMPLEMENTATION;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,7 +131,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DISTRIBUTION_BUILD;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -150,13 +149,16 @@
       <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <IncludeInUnityFile>false</IncludeInUnityFile>
+      <CustomUnityFile>false</CustomUnityFile>
+      <PreprocessorDefinitions>DISTRIBUTION_BUILD;NDEBUG;MA_NO_DEVICE_IO;MINIAUDIO_IMPLEMENTATION;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -175,6 +177,9 @@
     <ClCompile Include="src\ObstacleHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="include\SDL2\SDL_config.h.cmake" />
+    <None Include="include\SDL2\SDL_config.h.in" />
+    <None Include="include\SDL2\SDL_config_macosx.h.orig" />
     <None Include="include\SDL_config.h.cmake" />
     <None Include="include\SDL_config.h.in" />
     <None Include="include\SDL_config_macosx.h.orig" />
@@ -186,18 +191,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
-    <ClInclude Include="src\Iron_Engine\Components\Animator.hpp" />
-    <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
     <ClInclude Include="include\close_code.h" />
-    <ClInclude Include="include\ImGui\imconfig.h" />
-    <ClInclude Include="include\ImGui\imgui.h" />
-    <ClInclude Include="include\ImGui\imgui_impl_sdl.h" />
-    <ClInclude Include="include\ImGui\imgui_impl_sdlrenderer.h" />
-    <ClInclude Include="include\ImGui\imgui_internal.h" />
-    <ClInclude Include="include\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="include\ImGui\imstb_textedit.h" />
-    <ClInclude Include="include\ImGui\imstb_truetype.h" />
     <ClInclude Include="include\SDL.h" />
+    <ClInclude Include="include\SDL2\begin_code.h" />
+    <ClInclude Include="include\miniaudio.h" />
     <ClInclude Include="include\SDL_assert.h" />
     <ClInclude Include="include\SDL_atomic.h" />
     <ClInclude Include="include\SDL_audio.h" />
@@ -238,6 +235,60 @@
     <ClInclude Include="include\SDL_messagebox.h" />
     <ClInclude Include="include\SDL_metal.h" />
     <ClInclude Include="include\SDL_misc.h" />
+    <ClInclude Include="include\SDL_vulkan.h" />
+    <ClInclude Include="src\Iron_Engine\Components\Animator.hpp" />
+    <ClInclude Include="src\Iron_Engine\Components\Text.hpp" />
+    <ClInclude Include="src\Iron_Engine\Golden\RigidBody.hpp" />
+    <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
+    <ClInclude Include="include\SDL2\close_code.h" />
+    <ClInclude Include="include\ImGui\imconfig.h" />
+    <ClInclude Include="include\ImGui\imgui.h" />
+    <ClInclude Include="include\ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="include\ImGui\imgui_impl_sdlrenderer.h" />
+    <ClInclude Include="include\ImGui\imgui_internal.h" />
+    <ClInclude Include="include\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="include\ImGui\imstb_textedit.h" />
+    <ClInclude Include="include\ImGui\imstb_truetype.h" />
+    <ClInclude Include="include\SDL2\SDL.h" />
+    <ClInclude Include="include\SDL2\SDL_assert.h" />
+    <ClInclude Include="include\SDL2\SDL_atomic.h" />
+    <ClInclude Include="include\SDL2\SDL_bits.h" />
+    <ClInclude Include="include\SDL2\SDL_blendmode.h" />
+    <ClInclude Include="include\SDL2\SDL_clipboard.h" />
+    <ClInclude Include="include\SDL2\SDL_config.h" />
+    <ClInclude Include="include\SDL2\SDL_config_android.h" />
+    <ClInclude Include="include\SDL2\SDL_config_iphoneos.h" />
+    <ClInclude Include="include\SDL2\SDL_config_macosx.h" />
+    <ClInclude Include="include\SDL2\SDL_config_minimal.h" />
+    <ClInclude Include="include\SDL2\SDL_config_pandora.h" />
+    <ClInclude Include="include\SDL2\SDL_config_psp.h" />
+    <ClInclude Include="include\SDL2\SDL_config_windows.h" />
+    <ClInclude Include="include\SDL2\SDL_config_winrt.h" />
+    <ClInclude Include="include\SDL2\SDL_config_wiz.h" />
+    <ClInclude Include="include\SDL2\SDL_copying.h" />
+    <ClInclude Include="include\SDL2\SDL_cpuinfo.h" />
+    <ClInclude Include="include\SDL2\SDL_egl.h" />
+    <ClInclude Include="include\SDL2\SDL_endian.h" />
+    <ClInclude Include="include\SDL2\SDL_error.h" />
+    <ClInclude Include="include\SDL2\SDL_events.h" />
+    <ClInclude Include="include\SDL2\SDL_filesystem.h" />
+    <ClInclude Include="include\SDL2\SDL_gamecontroller.h" />
+    <ClInclude Include="include\SDL2\SDL_gesture.h" />
+    <ClInclude Include="include\SDL2\SDL_guid.h" />
+    <ClInclude Include="include\SDL2\SDL_haptic.h" />
+    <ClInclude Include="include\SDL2\SDL_hidapi.h" />
+    <ClInclude Include="include\SDL2\SDL_hints.h" />
+    <ClInclude Include="include\SDL2\SDL_image.h" />
+    <ClInclude Include="include\SDL2\SDL_joystick.h" />
+    <ClInclude Include="include\SDL2\SDL_keyboard.h" />
+    <ClInclude Include="include\SDL2\SDL_keycode.h" />
+    <ClInclude Include="include\SDL2\SDL_loadso.h" />
+    <ClInclude Include="include\SDL2\SDL_locale.h" />
+    <ClInclude Include="include\SDL2\SDL_log.h" />
+    <ClInclude Include="include\SDL2\SDL_main.h" />
+    <ClInclude Include="include\SDL2\SDL_messagebox.h" />
+    <ClInclude Include="include\SDL2\SDL_metal.h" />
+    <ClInclude Include="include\SDL2\SDL_misc.h" />
     <ClInclude Include="include\SDL_mixer.h" />
     <ClInclude Include="include\SDL_mouse.h" />
     <ClInclude Include="include\SDL_mutex.h" />
@@ -285,7 +336,7 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
-    <ClInclude Include="include\SDL_vulkan.h" />
+    <ClInclude Include="include\SDL2\SDL_vulkan.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Iron_Engine\Application.hpp" />
     <ClInclude Include="src\Iron_Engine\Engine.hpp" />

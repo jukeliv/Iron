@@ -1,97 +1,48 @@
 #pragma once
-//TODO: ReWrite this class with another Audio Library/Framework
-/*
+
 #include <Iron_Engine\Core.hpp>
-
 #include <string_view>
-
-enum class AudioData { IRON_MUSIC, IRON_SFX };
 
 typedef struct AudioConfig
 {
 public:
-	AudioConfig(bool _loop, bool _force)
-		:loop(_loop), force(_force)
-	{
-
-	}
+	AudioConfig(bool _loop)
+		:loop(_loop){}
 public:
 	bool loop = false;
-	bool force = false;
 }AudioConfig;
 
 class AudioClip
 {
 public:
-	AudioClip(std::string_view path, AudioData data = AudioData::IRON_SFX)
-		:m_Data(data)
+	AudioClip(std::string_view path)
 	{
-		if (m_Data == AudioData::IRON_MUSIC) {
-			m_MusicClip = Mix_LoadMUS(path.data());
-
-			if (!m_MusicClip)
-			{
-				ERROR("Failed to load music!");
-				ERROR(path.data());
-				ERROR("SDL_MIXER ERROR: ");
-				ERROR(Mix_GetError());
-
-				exit(-1);
-			}
-		}
-		else
-		{
-			m_AudioClip = Mix_LoadWAV(path.data());
-
-			if (!m_AudioClip)
-			{
-				ERROR("Failed to load music!");
-				ERROR(path.data());
-				ERROR("SDL_MIXER ERROR: ");
-				ERROR(Mix_GetError());
-
-				exit(-1);
-			}
+		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), 0, NULL, NULL, &g_Sound);
+		if (result != MA_SUCCESS) {
+			printf("Failed to initialize sound.");
+			exit(-1);
 		}
 	}
 
 	inline void Play(AudioConfig* configuration = NULL)
 	{
-		if (m_Data == AudioData::IRON_MUSIC)
-		{
-			if (Mix_PlayingMusic() == 0 || configuration->force)
-			{
-				Mix_PlayMusic(m_MusicClip, configuration->loop?-1:0);
-			}
-		}
-		else
-		{
-			Mix_PlayChannel(-1, m_AudioClip, configuration->loop ?-1:0);
-		}
+		ma_sound_set_looping(&g_Sound, configuration->loop);
+
+		ma_sound_start(&g_Sound);
 	}
 
 	//The volume goes from 0.0 to 1.0
 	inline void SetVolume(double v)
 	{
-		uint32_t volume = std::ceil(powf(v, 2) * MIX_MAX_VOLUME);
+		float volume = powf(v, 2);
 
-		if (m_Data == AudioData::IRON_MUSIC)
-			Mix_VolumeMusic(volume);
-		else
-			Mix_VolumeChunk(m_AudioClip, volume);
+		ma_sound_set_volume(&g_Sound, volume);
 	}
 
 	~AudioClip()
 	{
-		Mix_FreeMusic(m_MusicClip);
-		m_MusicClip = nullptr;
-
-		Mix_FreeChunk(m_AudioClip);
-		m_AudioClip = nullptr;
+		ma_sound_uninit(&g_Sound);
 	}
 private:
-	AudioData& m_Data;
-
-	Mix_Music* m_MusicClip = nullptr;
-	Mix_Chunk* m_AudioClip = nullptr;
-};*/
+	ma_sound g_Sound;
+};

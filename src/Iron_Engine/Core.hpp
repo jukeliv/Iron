@@ -2,8 +2,13 @@
 
 //SDL2
 #include <SDL.h>
+#include <SDL_audio.h>
 #include <SDL_image.h>
-#include <SDL_mixer.h>
+//MiniAudio
+#include "miniaudio.h"
+
+#define CHANNELS    2               /* Setup Stereo Audio. */
+#define SAMPLE_RATE 48000
 //Dear ImGui
 #include <ImGui\imgui.h>
 #include <ImGui\imgui_impl_sdl.h>
@@ -41,6 +46,18 @@ namespace IronGL
 	SDL_Window* m_Window;
 	SDL_Surface* m_ScreenSurface;
 	SDL_Renderer* m_Renderer;
+
+	//START- MINIAUDIO
+	ma_engine g_Engine;
+	SDL_AudioDeviceID deviceID;
+
+	void data_callback(void* pUserData, ma_uint8* pBuffer, int bufferSizeInBytes)
+	{
+		/* Reading is just a matter of reading straight from the engine. */
+		ma_uint32 bufferSizeInFrames = (ma_uint32)bufferSizeInBytes / ma_get_bytes_per_frame(ma_format_f32, ma_engine_get_channels(&g_Engine));
+		ma_engine_read_pcm_frames(&g_Engine, pBuffer, bufferSizeInFrames, NULL);
+	}
+	//END - MINIAUDIO
 
 	void Init()
 	{
@@ -97,27 +114,61 @@ namespace IronGL
 			exit(-1);
 		}
 
-		/*
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		{
-			ERROR("SDL_mixer could not initialize! SDL_mixer Error:");
-			ERROR(Mix_GetError());
+		//Miniaudio
+		ma_result result;
+		ma_engine_config engineConfig = ma_engine_config_init();
+
+		SDL_AudioSpec desiredSpec;
+		SDL_AudioSpec obtainedSpec;
+
+		engineConfig.noDevice = MA_TRUE;      /* <-- Make sure this is set so that no device is created (we'll deal with that ourselves). */
+		engineConfig.channels = CHANNELS;
+		engineConfig.sampleRate = SAMPLE_RATE;
+
+		result = ma_engine_init(&engineConfig, &g_Engine);
+		if (result != MA_SUCCESS) {
+			printf("Failed to initialize audio engine.");
 			exit(-1);
-		}*/
+		}
+
+		if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0) {
+			printf("Failed to initialize SDL sub-system.");
+			exit(-1);
+		}
+
+		MA_ZERO_OBJECT(&desiredSpec);
+		desiredSpec.freq = ma_engine_get_sample_rate(&g_Engine);
+		desiredSpec.format = AUDIO_F32;
+		desiredSpec.channels = ma_engine_get_channels(&g_Engine);
+		desiredSpec.samples = 512;
+		desiredSpec.callback = data_callback;
+		desiredSpec.userdata = NULL;
+
+		deviceID = SDL_OpenAudioDevice(NULL, 0, &desiredSpec, &obtainedSpec, SDL_AUDIO_ALLOW_ANY_CHANGE);
+		if (deviceID == 0) {
+			printf("Failed to open SDL audio device.");
+			exit(-1);
+		}
+
+		SDL_PauseAudioDevice(deviceID, 0);
 
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}
 
 	void Shutdown()
 	{
+		//Unitialize MiniSound
+		ma_engine_uninit(&g_Engine);
+		SDL_CloseAudioDevice(deviceID);
 		//Destroy window
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = NULL;
 		SDL_DestroyWindow(m_Window);
 		m_Window = NULL;
 		m_ScreenSurface = NULL;
+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 		SDL_Quit();
-
+		//Unitialize ImGui
 		ImGui_ImplSDLRenderer_Shutdown();
 		ImGui_ImplSDL2_Shutdown();
 		ImGui::DestroyContext();

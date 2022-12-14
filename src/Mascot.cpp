@@ -1,16 +1,18 @@
 #pragma once
 
 #include <Iron_Engine/Engine.hpp>
+#include <Iron_Engine/Golden/RigidBody.hpp>
 
 class Mascot : GameObject
 {
 public:
 	Mascot()
-		:sprite("res/images/slime.png"), collider(Transform(),Golden::ColliderType::SquareCollider),
-		vel(0)
+		:sprite(transform,"res/images/slime.png"), 
+		collider(Transform(),Golden::ColliderType::SquareCollider),
+		rigidBody(transform)
 	{
 		animator = std::make_unique<Animator>(sprite);
-		sprite.transform.scale = glm::vec2(4);
+		this->transform.scale = glm::vec2(4);
 		sprite.ScreenCenter();
 
 		sprite.transform.position.x = 0;
@@ -22,12 +24,11 @@ public:
 
 	void Update(Input& input, const Time& time)
 	{
+		rigidBody.velocity.y = input.keys[SDLK_q] ? -1 : 1;
+
 		animator->step(time);
+		rigidBody.step(time);
 		collider.step(sprite.transform.position, glm::vec2(24));
-
-		vel.y = input.keys[SDLK_q]?-1:1;
-
-		sprite.transform.position += Golden::Ziffy::cal_velocity(vel, 30, time.delta);
 	}
 
 	void Render()
@@ -43,8 +44,8 @@ public:
 
 public:
 	std::unique_ptr<Animator> animator;
+	RigidBody rigidBody;
 	Sprite sprite;
 
 	Golden::Collider collider;
-	glm::vec2 vel;
 };
