@@ -238,7 +238,6 @@
     <ClInclude Include="include\SDL_vulkan.h" />
     <ClInclude Include="src\Iron_Engine\Components\Animator.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\AudioClip.hpp" />
-    <ClInclude Include="src\Iron_Engine\Components\Text.hpp" />
     <ClInclude Include="src\Iron_Engine\Golden\RigidBody.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
     <ClInclude Include="include\SDL2\close_code.h" />

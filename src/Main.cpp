@@ -1,7 +1,5 @@
 #define MINIAUDIO_IMPLEMENTATION
 #define MA_NO_DEVICE_IO
-#define MA_SUPPORT_SDL
-#define SDL_MAIN_HANDLED
 
 #include <Iron_Engine/Engine.hpp>
 #include "MainGame.cpp"

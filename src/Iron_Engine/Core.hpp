@@ -1,6 +1,7 @@
 #pragma once
 
 //SDL2
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <SDL_audio.h>
 #include <SDL_image.h>

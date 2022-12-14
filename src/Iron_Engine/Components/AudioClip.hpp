@@ -6,10 +6,12 @@
 typedef struct AudioConfig
 {
 public:
-	AudioConfig(bool _loop)
-		:loop(_loop){}
-public:
-	bool loop = false;
+	char loop = false;
+	//value goes from -1 to 1
+	float panning = 0.0f;
+	//value goes from 0 to 1
+	float volume = 1.0f;
+	float pitch = 1.0f;
 }AudioConfig;
 
 class AudioClip
@@ -24,25 +26,30 @@ public:
 		}
 	}
 
-	void Play(AudioConfig* configuration = NULL)
+	void Play()
 	{
-		ma_sound_set_looping(&m_Sound, configuration->loop);
+		step();
+
+		ma_sound_set_looping(&m_Sound, m_Config.loop);
 
 		ma_sound_start(&m_Sound);
 	}
 
-	//The volume goes from 0.0 to 1.0
-	void SetVolume(double v)
+	void step()
 	{
-		float volume = powf(v, 2);
+		ma_sound_set_position(&m_Sound, m_Config.panning, 0.0f, 0.0f);
 
-		ma_sound_set_volume(&m_Sound, volume);
+		ma_sound_set_volume(&m_Sound, powf(m_Config.volume, 2));
+
+		ma_sound_set_pitch(&m_Sound, m_Config.pitch);
 	}
 
 	~AudioClip()
 	{
 		ma_sound_uninit(&m_Sound);
 	}
+public:
+	AudioConfig m_Config;
 private:
 	ma_sound m_Sound;
 };

@@ -10,7 +10,8 @@ public:
 	MainGame()
 		:clip("res/music/FutureWave.mp3")
 	{
-		clip.Play(new AudioConfig(true));
+		clip.m_Config.loop = true;
+		clip.Play();
 	}
 
 	//When the program is shuting down
@@ -22,6 +23,7 @@ public:
 	//Every Frame ( Manage Logic )
 	void Update()
 	{
+		clip.step();
 		mascot.Update(input, time);
 		handler.Update(time);
 	}
