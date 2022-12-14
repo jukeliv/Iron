@@ -13,9 +13,10 @@ namespace Golden
 			return mass * G;
 		}
 
-		inline static glm::vec2 cal_velocity(glm::vec2 in, float mass, const float& delta)
+		inline static glm::vec2 cal_force(glm::vec2 acc, float mass)
 		{
-			return in + cal_weight(mass) * in;
+			//F = M*A
+			return mass * acc;
 		}
 	};
 }

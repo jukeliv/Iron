@@ -1,7 +1,7 @@
 #include <Iron_Engine/Engine.hpp>
 #include "MainGame.cpp"
 
-int main(int argc, char* argv[]) 
+int SDL_main(int argc, char* argv[])
 {
 	/*
 	* Note(JukeLiv): 

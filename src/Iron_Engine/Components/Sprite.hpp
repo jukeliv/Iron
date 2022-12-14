@@ -49,7 +49,12 @@ public:
 		renderQuad.w *= transform.scale.x;
 		renderQuad.h *= transform.scale.y;
 
-		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
+		culling = (renderQuad.x - renderQuad.w > WINDOW_WIDTH || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > WINDOW_HEIGHT || renderQuad.y + renderQuad.h < 0);
+
+		if (culling)
+			TRACE("CULLING SPR");
+		else
+			SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
 	}
 
 	inline void ScreenCenter()
@@ -59,6 +64,7 @@ public:
 public:
 	Transform& transform;
 	SpriteData data;
+	bool culling;
 private:
 	SDL_Texture* m_Tex;
 	SDL_Rect* clip = NULL;

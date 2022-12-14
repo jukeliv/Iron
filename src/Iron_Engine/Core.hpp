@@ -5,7 +5,7 @@
 #include <SDL_audio.h>
 #include <SDL_image.h>
 //MiniAudio
-#include "miniaudio.h"
+//#include "miniaudio.h"
 
 #define CHANNELS    2               /* Setup Stereo Audio. */
 #define SAMPLE_RATE 48000
@@ -47,26 +47,26 @@ namespace IronGL
 	SDL_Surface* m_ScreenSurface;
 	SDL_Renderer* m_Renderer;
 
-	//START- MINIAUDIO
-	ma_engine g_Engine;
+	/*START - MINIAUDIO
+	static ma_engine g_Engine;
 	SDL_AudioDeviceID deviceID;
 
-	void data_callback(void* pUserData, ma_uint8* pBuffer, int bufferSizeInBytes)
+	static void data_callback(void* pUserData, ma_uint8* pBuffer, int bufferSizeInBytes)
 	{
-		/* Reading is just a matter of reading straight from the engine. */
+		//Reading is just a matter of reading straight from the engine.
 		ma_uint32 bufferSizeInFrames = (ma_uint32)bufferSizeInBytes / ma_get_bytes_per_frame(ma_format_f32, ma_engine_get_channels(&g_Engine));
 		ma_engine_read_pcm_frames(&g_Engine, pBuffer, bufferSizeInFrames, NULL);
 	}
-	//END - MINIAUDIO
+	//END - MINIAUDIO*/
 
 	void Init()
 	{
-		unsigned int flags = SDL_INIT_VIDEO/*| SDL_INIT_AUDIO*/;
+		uint32_t flags = SDL_INIT_VIDEO;
 		if (SDL_Init(flags) < 0)
 		{
 			ERROR("SDL could not initialize! SDL_Error:");
 			ERROR(SDL_GetError());
-			exit(SDL_Init(flags));
+			exit(-1);
 		}
 
 		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
@@ -114,14 +114,14 @@ namespace IronGL
 			exit(-1);
 		}
 
-		//Miniaudio
+		/*Miniaudio
 		ma_result result;
 		ma_engine_config engineConfig = ma_engine_config_init();
 
 		SDL_AudioSpec desiredSpec;
 		SDL_AudioSpec obtainedSpec;
 
-		engineConfig.noDevice = MA_TRUE;      /* <-- Make sure this is set so that no device is created (we'll deal with that ourselves). */
+		engineConfig.noDevice = MA_TRUE;      //<-- Make sure this is set so that no device is created (we'll deal with that ourselves).
 		engineConfig.channels = CHANNELS;
 		engineConfig.sampleRate = SAMPLE_RATE;
 
@@ -150,7 +150,7 @@ namespace IronGL
 			exit(-1);
 		}
 
-		SDL_PauseAudioDevice(deviceID, 0);
+		SDL_PauseAudioDevice(deviceID, 0);*/
 
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}
@@ -158,8 +158,8 @@ namespace IronGL
 	void Shutdown()
 	{
 		//Unitialize MiniSound
-		ma_engine_uninit(&g_Engine);
-		SDL_CloseAudioDevice(deviceID);
+		//ma_engine_uninit(&g_Engine);
+		//SDL_CloseAudioDevice(deviceID);
 		//Destroy window
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = NULL;

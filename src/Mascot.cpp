@@ -2,6 +2,7 @@
 
 #include <Iron_Engine/Engine.hpp>
 #include <Iron_Engine/Golden/RigidBody.hpp>
+#include <box2d/box2d.h>
 
 class Mascot : GameObject
 {
@@ -24,7 +25,7 @@ public:
 
 	void Update(Input& input, const Time& time)
 	{
-		rigidBody.velocity.y = input.keys[SDLK_q] ? -1 : 1;
+		rigidBody.velocity.y = (input.keys[SDLK_q] ? -1 : 1);
 
 		animator->step(time);
 		rigidBody.step(time);

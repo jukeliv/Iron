@@ -4,7 +4,7 @@
 
 typedef struct RigidBodyConfiguration
 {
-	float mass = 5;
+	float mass = 1;
 	bool kinematic = false;
 }RigidBodyConfiguration;
 
@@ -16,16 +16,16 @@ public:
 
 	void step(const Time& time)
 	{
+		/*
 		if (force.x != 0)
 			force.x -= force.x>0?time.delta:-time.delta;
 
 		if (force.y != 0)
-			force.y -= force.y > 0 ? time.delta : -time.delta;
+			force.y -= force.y > 0 ? time.delta : -time.delta;*/
 		
-		if(!config.kinematic)
-			velocity += Golden::Ziffy::cal_velocity(force, config.mass, time.delta);
+		force += Golden::Ziffy::cal_force(velocity, config.mass);
 
-		transform.position += velocity;
+		transform.position += (force * time.delta);
 	}
 
 public:

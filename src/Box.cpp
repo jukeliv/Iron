@@ -19,7 +19,7 @@ public:
 	{
 		collider.step(sprite);
 
-		if (this->transform.position.x + sprite.data.bounds.x < 0)
+		if (sprite.culling && sprite.transform.position.x<0)
 			Reset();
 
 		this->transform.position.x-=300* time.delta;

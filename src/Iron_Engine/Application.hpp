@@ -21,9 +21,18 @@ public:
 	template <typename T>
 	void SetCurrentGame()
 	{
-		game.release();
-		game.reset();
-		game = std::make_unique<T>();
+		try {
+			game.release();
+			game.reset();
+			game = std::make_unique<T>();
+
+			if(game.get() == nullptr)
+				throw("ERROR LOADING SCENE");
+		}
+		catch (const char* e)
+		{
+			ERROR(e);
+		}
 	}
 
 	void Run()
@@ -32,7 +41,9 @@ public:
 		Timer cap_timer;
 		
 		SDL_Event e;
-		bool quit = false;
+		char quit = false;
+
+		Game* gm = game.get();
 
 		while (!quit)
 		{
@@ -42,33 +53,33 @@ public:
 
 			while (SDL_PollEvent(&e) != 0)
 			{
-				quit = e.type == SDL_QUIT;
+				quit = (e.type == SDL_QUIT);
 
 				uint32_t key = e.key.keysym.sym;
 
 				switch (e.type)
 				{
 				case SDL_KEYDOWN:
-					game->input.keys[key] = true;
+					gm->input.keys[key] = true;
 					break;
 				case SDL_KEYUP:
-					game->input.keys[key] = false;
+					gm->input.keys[key] = false;
 					break;
 				}
 
-				game->ProcessEvents(e);
+				gm->ProcessEvents(e);
 				ImGui_ImplSDL2_ProcessEvent(&e);
 			}
 
-			SDL_SetRenderDrawColor(IronGL::m_Renderer, 5, 5, 60, 0xFF);
+			SDL_SetRenderDrawColor(IronGL::m_Renderer, 0x0, 0x0, 0x0, 0xFF);
 			SDL_RenderClear(IronGL::m_Renderer);
 			
-			game->Render();
+			gm->Render();
 
 			ImGui_ImplSDLRenderer_NewFrame();
 			ImGui_ImplSDL2_NewFrame();
 			ImGui::NewFrame();
-			game->RenderUI();
+			gm->RenderUI();
 
 			ImGui::Render();
 
@@ -82,10 +93,10 @@ public:
 			}
 
 			fps_timer.end_timer();
-			game->time.step((float)fps_timer.elapsed_time() / 1000);
+			gm->time.step((float)fps_timer.elapsed_time() / 1000);
 		}
 
-		game->~Game();
+		gm->~Game();
 
 		IronGL::Shutdown();
 

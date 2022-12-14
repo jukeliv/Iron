@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include <Iron_Engine\Core.hpp>
@@ -24,7 +25,7 @@ public:
 		}
 	}
 
-	inline void Play(AudioConfig* configuration = NULL)
+	void Play(AudioConfig* configuration = NULL)
 	{
 		ma_sound_set_looping(&g_Sound, configuration->loop);
 
@@ -32,7 +33,7 @@ public:
 	}
 
 	//The volume goes from 0.0 to 1.0
-	inline void SetVolume(double v)
+	void SetVolume(double v)
 	{
 		float volume = powf(v, 2);
 
@@ -45,4 +46,4 @@ public:
 	}
 private:
 	ma_sound g_Sound;
-};
+};*/
