@@ -6,11 +6,18 @@
 typedef struct AudioConfig
 {
 public:
+	/*on enabled, performance gets better, but memory usage increase
+	* if your file is large and/or its only played ones, enable this
+	* if it is small and/or it's used many times, let it as it is right now
+	*/
+	char fast = false;
+	//enables playing the song again when it ends
 	char loop = false;
 	//value goes from -1 to 1
 	float panning = 0.0f;
 	//value goes from 0 to 1
 	float volume = 1.0f;
+	//this affects speed too
 	float pitch = 1.0f;
 }AudioConfig;
 
@@ -19,9 +26,10 @@ class AudioClip
 public:
 	AudioClip(std::string_view path)
 	{
-		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), 0, NULL, NULL, &m_Sound);
+		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), (ma_uint32)m_Config.fast?MA_SOUND_FLAG_DECODE:MA_SOUND_FLAG_STREAM, NULL, NULL, &m_Sound);
+
 		if (result != MA_SUCCESS) {
-			printf("Failed to initialize sound.");
+			ERROR("Failed to initialize sound.");
 			exit(-1);
 		}
 	}

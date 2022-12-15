@@ -8,7 +8,7 @@ public:
 	Box(float x)
 		:sprite(transform,"res/images/slime.png"), collider(Transform(), Golden::ColliderType::SquareCollider)
 	{
-		sprite.transform.scale = glm::vec2(4);
+		this->transform.scale = glm::vec2(4);
 		Reset();
 		this->transform.position.x = x;
 		sprite.data.clip.w = sprite.data.clip.h = 21;
@@ -27,7 +27,7 @@ public:
 
 	void Reset()
 	{
-		this->transform.position.y = Random::random_value(0, (int)WINDOW_HEIGHT - sprite.data.bounds.y);
+		this->transform.position.y = Random::random_value(0, WINDOW_HEIGHT - sprite.data.bounds.y);
 		this->transform.position.x = WINDOW_WIDTH;
 	}
 

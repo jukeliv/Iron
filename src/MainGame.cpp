@@ -10,6 +10,7 @@ public:
 	MainGame()
 		:clip("res/music/FutureWave.mp3")
 	{
+		clip.m_Config.fast = true;
 		clip.m_Config.loop = true;
 		clip.Play();
 	}
