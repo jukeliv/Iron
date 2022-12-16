@@ -7,7 +7,8 @@ class ObstacleHandler
 {
 public:
 	ObstacleHandler()
-		:box2(WINDOW_WIDTH * 1.5f), box1(WINDOW_WIDTH)
+		:box2(WINDOW_WIDTH * 1.5f),
+		box1(WINDOW_WIDTH)
 	{
 	}
 	~ObstacleHandler()
@@ -22,14 +23,23 @@ public:
 		box2.Update(time);
 	}
 
-	void Render()
+	void Render(Camera& camera)
 	{
-		box1.Render();
-		box2.Render();
+		box1.Render(camera);
+		box2.Render(camera);
 	}
 
 	bool isColliding(const Golden::Collider& other)
 	{
+
+		if (box1.collider.CheckColliding(other)) {
+			box1.Reset();
+		}
+		else if (box2.collider.CheckColliding(other)) {
+			box2.Reset();
+		}
+
+
 		return box1.collider.CheckColliding(other) || box2.collider.CheckColliding(other);
 	}
 

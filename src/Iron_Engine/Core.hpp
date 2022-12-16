@@ -32,7 +32,7 @@
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("LOG: %s\n", x)
-#define TRACE_VAR(x) printf("LOG: %u\n", x)
+#define TRACE_VAR(x) printf("LOG: %f\n", x)
 #define ERROR(x) printf("ERROR: %s\n", x)
 #else
 #define TRACE(x)

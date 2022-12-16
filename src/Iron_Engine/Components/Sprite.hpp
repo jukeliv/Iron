@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Iron_Engine\Core.hpp>
+#include <Iron_Engine/Utils/Camera.hpp>
 
 #include "glm/glm.hpp"
 #include <string_view>
@@ -35,19 +36,23 @@ public:
 		m_Tex = nullptr;
 	}
 
-	void Render()
+	void Render(Camera& camera)
 	{
 		clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
 
 		data.clip.w = data.clip.w == 0? data.bounds.x : data.clip.w;
 		data.clip.h = data.clip.h == 0 ? data.bounds.y : data.clip.h;
 
+		float x = transform.position.x - camera.position.x;
+		float y = transform.position.y + camera.position.y;
+		//x -= pow(sqrtf(y), 2) * ((float)camera.getScale() - 1.0f);
+		//y += pow(sqrtf(y), 2) * ((float)camera.getScale() - 1.0f);
 		SDL_Rect renderQuad =
-		{   transform.position.x, transform.position.y, 
-			data.clip.w, data.clip.h };
+		{   x , y,
+		data.clip.w, data.clip.h };
 		
-		renderQuad.w *= transform.scale.x;
-		renderQuad.h *= transform.scale.y;
+		renderQuad.w *= transform.scale.x * camera.getScale();
+		renderQuad.h *= transform.scale.y * camera.getScale();
 
 		culling = (renderQuad.x - renderQuad.w > WINDOW_WIDTH || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > WINDOW_HEIGHT || renderQuad.y + renderQuad.h < 0);
 

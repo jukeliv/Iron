@@ -31,9 +31,9 @@ public:
 		this->transform.position.x = WINDOW_WIDTH;
 	}
 
-	void Render()
+	void Render(Camera& camera)
 	{
-		sprite.Render();
+		sprite.Render(camera);
 	}
 public:
 	Sprite sprite;

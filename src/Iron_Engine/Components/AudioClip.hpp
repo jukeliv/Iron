@@ -26,10 +26,12 @@ class AudioClip
 public:
 	AudioClip(std::string_view path)
 	{
-		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), (ma_uint32)m_Config.fast?MA_SOUND_FLAG_DECODE:MA_SOUND_FLAG_STREAM, NULL, NULL, &m_Sound);
+		ma_uint32 flags = m_Config.fast ? MA_SOUND_FLAG_DECODE : MA_SOUND_FLAG_STREAM;
+		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), flags, NULL, NULL, &m_Sound);
 
 		if (result != MA_SUCCESS) {
 			ERROR("Failed to initialize sound.");
+			ERROR(path.data());
 			exit(-1);
 		}
 	}
@@ -41,6 +43,11 @@ public:
 		ma_sound_set_looping(&m_Sound, m_Config.loop);
 
 		ma_sound_start(&m_Sound);
+	}
+
+	void Stop()
+	{
+		ma_sound_stop(&m_Sound);
 	}
 
 	void step()

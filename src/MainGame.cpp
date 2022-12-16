@@ -37,12 +37,21 @@ public:
 	//Every Frame ( Draw Images )
 	void Render()
 	{
-		if(!handler.isColliding(mascot.collider))
-			mascot.Render();
+		if (!handler.isColliding(mascot.collider))
+			mascot.Render(camera);
 
-		handler.Render();
+		handler.Render(camera);
+	}
+
+	void RenderUI()
+	{
+		ImGui::Begin("Camera Controller");
+		ImGui::SliderFloat2("Camera Position", &camera.position.x, -200, 200);
+		ImGui::SliderFloat("Camera FOV", &camera.m_Config.fov, 40, 120.0f);
+		ImGui::End();
 	}
 public:
+	Camera camera;
 	Mascot mascot;
 	ObstacleHandler handler;
 	AudioClip clip;

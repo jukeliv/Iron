@@ -24,16 +24,16 @@ public:
 
 	void Update(Input& input, const Time& time)
 	{
-		rigidBody.velocity.y = (input.keys[SDLK_q] ? -1 : 1);
+		rigidBody.acceleration.y = (input.keys[SDLK_q] ? -1 : 1);
 
 		animator->step(time);
 		rigidBody.step(time);
 		collider.step(sprite.transform.position, glm::vec2(24));
 	}
 
-	void Render()
+	void Render(Camera& camera)
 	{
-		sprite.Render();
+		sprite.Render(camera);
 	}
 
 	~Mascot()

@@ -15,7 +15,7 @@ public:
 
 	virtual void Update(const Time& time) {}
 
-	virtual void Render() {}
+	virtual void Render(Camera& camera) {}
 public:
 	Transform transform;
 };
