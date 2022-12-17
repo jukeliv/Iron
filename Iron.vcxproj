@@ -171,10 +171,8 @@
     <ClCompile Include="include\ImGui\imgui_impl_sdlrenderer.cpp" />
     <ClCompile Include="include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="include\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\Icon.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Mascot.cpp" />
-    <ClCompile Include="src\ObstacleHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\SDL2\SDL_config.h.cmake" />

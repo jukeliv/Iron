@@ -38,41 +38,34 @@ public:
 
 	void Render(Camera& camera)
 	{
-		clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
+		clip = data.clip.w || data.clip.h ? &data.clip : NULL;
 
-		data.clip.w = data.clip.w == 0? data.bounds.x : data.clip.w;
-		data.clip.h = data.clip.h == 0 ? data.bounds.y : data.clip.h;
+		data.clip.w = data.clip.w? data.clip.w : data.bounds.x;
+		data.clip.h = data.clip.h? data.clip.h : data.bounds.y;
 		
-		float x = transform.position.x - camera.position.x;
-
-		float d1 = (WINDOW_WIDTH * camera.getScale()) - WINDOW_WIDTH;
-		d1 /= 2;
-		x = Matloon::map(x, 0, WINDOW_WIDTH, -d1, WINDOW_WIDTH + d1);
-
-		float y = transform.position.y + camera.position.y;
-
-		float d2 = (WINDOW_HEIGHT * camera.getScale()) - WINDOW_HEIGHT;
-		d2 /= 2;
-		y = Matloon::map(y, 0, WINDOW_HEIGHT, -d2, WINDOW_HEIGHT + d2);
+		glm::vec2 translate = camera.TranslatePosition(transform.position);
 
 		SDL_Rect renderQuad =
-		{   x , y,
+		{   translate.x , translate.y,
 		data.clip.w, data.clip.h };
 		
 		renderQuad.w *= (float)transform.scale.x * camera.getScale();
 		renderQuad.h *= (float)transform.scale.y * camera.getScale();
 
-		culling = (renderQuad.x - renderQuad.w > WINDOW_WIDTH || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > WINDOW_HEIGHT || renderQuad.y + renderQuad.h < 0);
+		// Comprueba si la textura está fuera de pantalla
+		culling = (renderQuad.x - renderQuad.w > IronGL::m_WindowConfiguration.width || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > IronGL::m_WindowConfiguration.height || renderQuad.y + renderQuad.h < 0);
 
-		if (culling)
-			TRACE("sprite is offscreen");
-		else
+		// Dibuja la textura en pantalla si no está fuera de pantalla
+		if (!culling)
+		{
+			clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
 			SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
+		}
 	}
 
 	inline void ScreenCenter()
 	{
-		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x * transform.scale.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y * transform.scale.y / 2) };
+		transform.position = { (float)IronGL::m_WindowConfiguration.width / 2 - (data.bounds.x * transform.scale.x / 2), (float)IronGL::m_WindowConfiguration.height / 2 - (data.bounds.y * transform.scale.y / 2) };
 	}
 public:
 	Transform& transform;

@@ -18,32 +18,66 @@
 #include <iostream>
 #include <assert.h>
 
-//WINDOW VARIABLES
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 640
-
-#define WINDOW_TITLE "IRON: Test Project"
-
-#define ENABLE_VSYNC true
-
-#define FPS_CAP 144
-#define TICKS_PER_FRAME (1000 / FPS_CAP)
-
 //LOGGER
 #ifndef DISTRIBUTION_BUILD
 #define TRACE(x) printf("LOG: %s\n", x)
-#define TRACE_VAR(x) printf("LOG: %f\n", x)
+#define TRACE_VAR_F(x) printf("LOG: %f\n", x)
+#define TRACE_VAR_I(x) printf("LOG: %i\n", x)
+#define TRACE_VAR_UI(x) printf("LOG: %ui\n", x)
+#define TRACE_VAR_U(x) printf("LOG: %u\n", x)
 #define ERROR(x) printf("ERROR: %s\n", x)
 #else
 #define TRACE(x)
+#define TRACE_VAR_F(x)
+#define TRACE_VAR_I(x)
+#define TRACE_VAR_UI(x)
+#define TRACE_VAR_U(x)
 #define TRACE_VAR(x)
 #define ERROR(x)
 #endif // !DISTRIBUTION_BUILD
+
+//WINDOW VARIABLES
+typedef struct WinConfig
+{
+public:
+	void CreateWin(SDL_Window*& win)
+	{
+		win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	}
+
+	void UpdateVsync(SDL_Renderer*& renderer)
+	{
+		if (SDL_RenderSetVSync(renderer, vsync) < 0)
+		{
+			TRACE("Unable to set VSync!");
+			ERROR(SDL_GetError());
+		}
+	}
+
+	void UpdateWinWH(SDL_Window*& win)
+	{
+		SDL_SetWindowSize(win, width, height);
+	}
+
+	void UpdateWinTitle(SDL_Window*& win)
+	{
+		SDL_SetWindowTitle(win, title.c_str());
+	}
+public:
+	int width = 640, height = 640;
+	std::string title = "IRON";
+	bool vsync = true;
+	int fpsCap = 144;
+public:
+	float ticksPerFrame() { return 1000 / fpsCap; }
+private:
+}WinConfig;
 
 //TODO:  Implement a new audio library/framework
 
 namespace IronGL
 {
+	static WinConfig m_WindowConfiguration;
 	SDL_Window* m_Window;
 	SDL_Surface* m_ScreenSurface;
 	SDL_Renderer* m_Renderer;
@@ -60,8 +94,9 @@ namespace IronGL
 	}
 	//END - MINIAUDIO
 
-	static void Init_SDL2()
+	static void Init_SDL2(WinConfig config)
 	{
+		m_WindowConfiguration = config;
 		uint32_t flags = SDL_INIT_VIDEO;
 		if (SDL_Init(flags) < 0)
 		{
@@ -70,11 +105,11 @@ namespace IronGL
 			exit(-1);
 		}
 
-		m_Window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+		m_WindowConfiguration.CreateWin(m_Window);
 
 		if (!m_Window)
 		{
-			ERROR("Window could not be created! SDL_Error: ");
+			ERROR("Window could not be created!\nSDL_Error: ");
 			ERROR(SDL_GetError());
 
 			exit(-1);
@@ -83,15 +118,11 @@ namespace IronGL
 		m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		if (!m_Renderer)
 		{
-			printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+			ERROR("Renderer could not be created!\nSDL Error: ");
+			ERROR(SDL_GetError());
 			exit(-1);
 		}
-
-		if (SDL_RenderSetVSync(m_Renderer, ENABLE_VSYNC) < 0)
-		{
-			TRACE("Unable to set VSync!");
-			ERROR(SDL_GetError());
-		}
+		m_WindowConfiguration.UpdateVsync(m_Renderer);
 
 		if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 		{

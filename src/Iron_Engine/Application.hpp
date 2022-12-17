@@ -10,14 +10,20 @@ public:
 	{
 	}
 
-	void Init()
+	void Init(WinConfig config)
 	{
 		//IronGL::Init();
-		IronGL::Init_SDL2();
+		IronGL::Init_SDL2(config);
 		SDL_FillRect(IronGL::m_ScreenSurface, NULL, SDL_MapRGB(IronGL::m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 		SDL_UpdateWindowSurface(IronGL::m_Window);
+		 //this is just a simple
+		SDL_Rect renderQuad = { 0, 0, config.width, config.height };
+		SDL_RenderCopyEx(IronGL::m_Renderer, SDL_CreateTextureFromSurface(IronGL::m_Renderer, IMG_Load("preloader.png")), NULL, &renderQuad, 0.0f, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
+		SDL_RenderPresent(IronGL::m_Renderer);
 
 		IronGL::Init_Ex();
+		SDL_PollEvent(NULL);
+		SDL_Delay(5000);
 	}
 
 	template <typename T>
@@ -80,9 +86,9 @@ public:
 			SDL_RenderPresent(IronGL::m_Renderer);
 
 			Uint32 cap = cap_timer.elapsed_time();
-			if (cap < TICKS_PER_FRAME)
+			if (cap < IronGL::m_WindowConfiguration.ticksPerFrame())
 			{
-				SDL_Delay(TICKS_PER_FRAME - cap);
+				SDL_Delay(IronGL::m_WindowConfiguration.ticksPerFrame() - cap);
 			}
 
 			fps_timer.end_timer();
