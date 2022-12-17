@@ -47,7 +47,7 @@ public:
 	{
 		ImGui::Begin("Camera Controller");
 		ImGui::SliderFloat2("Camera Position", &camera.position.x, -200, 200);
-		ImGui::SliderFloat("Camera FOV", &camera.m_Config.fov, 40, 120.0f);
+		ImGui::SliderFloat("Camera FOV", &camera.m_Config.fov, 40, 200);
 		ImGui::End();
 	}
 public:

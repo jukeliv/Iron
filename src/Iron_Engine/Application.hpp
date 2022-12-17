@@ -12,10 +12,12 @@ public:
 
 	void Init()
 	{
-		IronGL::Init();
-
+		//IronGL::Init();
+		IronGL::Init_SDL2();
 		SDL_FillRect(IronGL::m_ScreenSurface, NULL, SDL_MapRGB(IronGL::m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 		SDL_UpdateWindowSurface(IronGL::m_Window);
+
+		IronGL::Init_Ex();
 	}
 
 	template <typename T>

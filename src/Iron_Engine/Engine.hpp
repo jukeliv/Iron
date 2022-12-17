@@ -20,4 +20,4 @@
 #include <Iron_Engine/Application.hpp>
 #include <Iron_Engine/Core.hpp> 
 #include <Iron_Engine/GameObject.hpp>
-#include <Iron_Engine/Game.hpp>
+#include <Iron_Engine/Game.cpp>

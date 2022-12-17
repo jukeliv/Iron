@@ -25,20 +25,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distro|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -345,7 +345,7 @@
     <ClInclude Include="src\Iron_Engine\Golden\Ziffy.h" />
     <ClInclude Include="src\Iron_Engine\Math\Random.hpp" />
     <ClInclude Include="src\Iron_Engine\GameObject.hpp" />
-    <ClInclude Include="src\Iron_Engine\Game.hpp" />
+    <ClInclude Include="src\Iron_Engine\Game.cpp" />
     <ClInclude Include="src\Iron_Engine\Core.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\Input.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\Sprite.hpp" />

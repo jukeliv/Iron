@@ -60,7 +60,7 @@ namespace IronGL
 	}
 	//END - MINIAUDIO
 
-	void Init()
+	void Init_SDL2()
 	{
 		uint32_t flags = SDL_INIT_VIDEO;
 		if (SDL_Init(flags) < 0)
@@ -93,9 +93,22 @@ namespace IronGL
 			ERROR(SDL_GetError());
 		}
 
+		if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+		{
+			ERROR("SDL_image could not initialize! SDL_image Error:");
+			ERROR(IMG_GetError());
+
+			exit(-1);
+		}
+
+		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
+	}
+
+	void Init_Ex()
+	{
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		
+
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 
@@ -103,14 +116,6 @@ namespace IronGL
 		if (!ImGui_ImplSDL2_InitForSDLRenderer(m_Window, m_Renderer) || !ImGui_ImplSDLRenderer_Init(m_Renderer))
 		{
 			ERROR("ImGui could not initialize Renderer");
-
-			exit(-1);
-		}
-
-		if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-		{
-			ERROR("SDL_image could not initialize! SDL_image Error:");
-			ERROR(IMG_GetError());
 
 			exit(-1);
 		}
@@ -152,8 +157,6 @@ namespace IronGL
 		}
 
 		SDL_PauseAudioDevice(deviceID, 0);
-
-		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}
 
 	void Shutdown()

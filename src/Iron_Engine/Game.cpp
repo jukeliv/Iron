@@ -28,7 +28,6 @@ public:
 
 public:
 	/*DO NOT REMOVE THESE VARIABLES!!!*/
-
 	Time time;
 	Input input;
 };

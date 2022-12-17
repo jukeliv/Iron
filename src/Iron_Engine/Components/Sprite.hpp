@@ -42,11 +42,19 @@ public:
 
 		data.clip.w = data.clip.w == 0? data.bounds.x : data.clip.w;
 		data.clip.h = data.clip.h == 0 ? data.bounds.y : data.clip.h;
-
+		
 		float x = transform.position.x - camera.position.x;
+
+		float d1 = (WINDOW_WIDTH * camera.getScale()) - WINDOW_WIDTH;
+		d1 /= 2;
+		x = Matloon::map(x, 0, WINDOW_WIDTH, -d1, WINDOW_WIDTH + d1);
+
 		float y = transform.position.y + camera.position.y;
-		//x -= pow(sqrtf(y), 2) * ((float)camera.getScale() - 1.0f);
-		//y += pow(sqrtf(y), 2) * ((float)camera.getScale() - 1.0f);
+
+		float d2 = (WINDOW_HEIGHT * camera.getScale()) - WINDOW_HEIGHT;
+		d2 /= 2;
+		y = Matloon::map(y, 0, WINDOW_HEIGHT, -d2, WINDOW_HEIGHT + d2);
+
 		SDL_Rect renderQuad =
 		{   x , y,
 		data.clip.w, data.clip.h };
