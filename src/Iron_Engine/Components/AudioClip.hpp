@@ -54,6 +54,7 @@ public:
 	{
 		ma_sound_set_position(&m_Sound, m_Config.panning, 0.0f, 0.0f);
 
+
 		ma_sound_set_volume(&m_Sound, powf(m_Config.volume, 2));
 
 		ma_sound_set_pitch(&m_Sound, m_Config.pitch);

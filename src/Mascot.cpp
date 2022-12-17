@@ -44,7 +44,7 @@ public:
 
 public:
 	std::unique_ptr<Animator> animator;
-	RigidBody rigidBody;
+	Golden::Ziffy::RigidBody rigidBody;
 	Sprite sprite;
 
 	Golden::Collider collider;

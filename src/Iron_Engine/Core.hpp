@@ -60,7 +60,7 @@ namespace IronGL
 	}
 	//END - MINIAUDIO
 
-	void Init_SDL2()
+	static void Init_SDL2()
 	{
 		uint32_t flags = SDL_INIT_VIDEO;
 		if (SDL_Init(flags) < 0)
@@ -104,7 +104,7 @@ namespace IronGL
 		m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 	}
 
-	void Init_Ex()
+	static void Init_Ex()
 	{
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;

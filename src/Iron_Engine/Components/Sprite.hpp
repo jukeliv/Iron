@@ -11,7 +11,7 @@ typedef struct Transform
 public:
 	glm::vec2 position = { 0,0 };
 	glm::vec2 scale = { 1,1 };
-	float rotation;
+	float rotation = 0.0f;
 }Transform;
 
 typedef struct SpriteData
@@ -59,13 +59,13 @@ public:
 		{   x , y,
 		data.clip.w, data.clip.h };
 		
-		renderQuad.w *= transform.scale.x * camera.getScale();
-		renderQuad.h *= transform.scale.y * camera.getScale();
+		renderQuad.w *= (float)transform.scale.x * camera.getScale();
+		renderQuad.h *= (float)transform.scale.y * camera.getScale();
 
 		culling = (renderQuad.x - renderQuad.w > WINDOW_WIDTH || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > WINDOW_HEIGHT || renderQuad.y + renderQuad.h < 0);
 
 		if (culling)
-			TRACE("CULLING SPR");
+			TRACE("sprite is offscreen");
 		else
 			SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
 	}

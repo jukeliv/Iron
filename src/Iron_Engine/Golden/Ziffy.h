@@ -1,9 +1,9 @@
 #pragma once
 
-namespace Golden
+namespace Golden::Ziffy
 {
 	//Physics functions and constants
-	class Ziffy
+	class ZiffyFunc
 	{
 	public:
 		#define G 9.81f
