@@ -52,10 +52,10 @@ public:
 		renderQuad.w *= (float)transform.scale.x * camera.getScale();
 		renderQuad.h *= (float)transform.scale.y * camera.getScale();
 
-		// Comprueba si la textura está fuera de pantalla
+		// Check if the texture is out of the screen
 		culling = (renderQuad.x - renderQuad.w > IronGL::m_WindowConfiguration.width || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > IronGL::m_WindowConfiguration.height || renderQuad.y + renderQuad.h < 0);
 
-		// Dibuja la textura en pantalla si no está fuera de pantalla
+		// Draw texture onto the screen if it is not out of bounds
 		if (!culling)
 		{
 			clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;

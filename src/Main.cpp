@@ -17,6 +17,8 @@ int SDL_main(int argc, char* argv[])
 
 	WinConfig config;
 	config.title = "slime";
+	config.height = 720;
+	config.width = 1280;
 
 	app.Init(config);
 

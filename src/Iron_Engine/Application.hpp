@@ -17,8 +17,19 @@ public:
 		SDL_FillRect(IronGL::m_ScreenSurface, NULL, SDL_MapRGB(IronGL::m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 		SDL_UpdateWindowSurface(IronGL::m_Window);
 		 //this is just a simple
-		SDL_Rect renderQuad = { 0, 0, config.width, config.height };
-		SDL_RenderCopyEx(IronGL::m_Renderer, SDL_CreateTextureFromSurface(IronGL::m_Renderer, IMG_Load("preloader.png")), NULL, &renderQuad, 0.0f, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
+		Transform trasnform;
+		Transform trasnform2;
+		Camera cam;
+		Sprite spr(trasnform, "Iron/preloader.png");
+		spr.data.bounds.x = config.width;
+		spr.data.bounds.y = config.height;
+
+		Sprite c(trasnform2, "Iron/preloader_c++.png");
+		trasnform2.scale = glm::vec2((config.width+config.height/2)/640*1.5f);
+		c.ScreenCenter();
+
+		spr.Render(cam);
+		c.Render(cam);
 		SDL_RenderPresent(IronGL::m_Renderer);
 
 		IronGL::Init_Ex();

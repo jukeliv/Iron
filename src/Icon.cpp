@@ -4,21 +4,19 @@ class Icon : public GameObject
 {
 public:
 	Icon(Camera& camera)
-		: camera(camera), spr(transform, "res/images/slime.png")
+		: camera(camera), spr(transform, "res/images/slime.png"), animator(spr)
 	{
-		animator = std::make_unique<Animator>(spr);
-
 		transform.scale = glm::vec2(4);
 		spr.ScreenCenter();
 
-		animator->AddByRects("idle", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21}, {0, 21, 21, 21} }, 3);
+		animator.AddByRects("idle", { {0, 0, 21, 21}, {0, 21, 21, 21}, {21, 0, 21, 21}, {0, 21, 21, 21} }, 3);
 
-		animator->PlayAnim("idle");
+		animator.PlayAnim("idle");
 	}
 
 	void Update(const Time& time)
 	{
-		animator->step(time);
+		animator.step(time);
 	}
 
 	void Render()
@@ -29,11 +27,9 @@ public:
 	~Icon()
 	{
 		spr.~Sprite();
-		animator.release();
-		delete animator.get();
 	}
 private:
-	std::unique_ptr<Animator> animator;
+	Animator animator;
 	Sprite spr;
 	Transform transform;
 	Camera& camera;

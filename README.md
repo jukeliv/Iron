@@ -6,7 +6,7 @@ Iron is a 2D Open Source lightweight "Game Engine" made with SDL 2
 	in the example is the way i want you to use Iron, so try that :)
 
 ## HOW TO COMPILE
-### Hey, this only works with Visual Studio ( only tested on vs 2019 )
+### Hey, this only works with Visual Studio ( only tested on vs 2019 and vs 2022 )
 ### if you are doing this, is cuz you want to distribute your project, so remember, use "Distro" to compile
 - Hit F5 for start building the project
 - It it's going to compile inside "bin\Distro-x64\$(ProjectName)\"
