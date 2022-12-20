@@ -16,7 +16,8 @@ public:
 		IronGL::Init_SDL2(config);
 		SDL_FillRect(IronGL::m_ScreenSurface, NULL, SDL_MapRGB(IronGL::m_ScreenSurface->format, 0xFF, 0xFF, 0xFF));
 		SDL_UpdateWindowSurface(IronGL::m_Window);
-		 //this is just a simple
+		 //this is just a simple splash screen
+
 		Transform trasnform;
 		Transform trasnform2;
 		Camera cam;
@@ -24,17 +25,37 @@ public:
 		spr.data.bounds.x = config.width;
 		spr.data.bounds.y = config.height;
 
-		Sprite c(trasnform2, "Iron/preloader_c++.png");
+		Sprite c(trasnform2, "Iron/preloader_logo.png");
 		trasnform2.scale = glm::vec2((config.width+config.height/2)/640*1.5f);
 		c.ScreenCenter();
+		c.transform.position.y = config.width;
 
-		spr.Render(cam);
-		c.Render(cam);
-		SDL_RenderPresent(IronGL::m_Renderer);
-
+		//dont move this, or else the audio its not going to play
 		IronGL::Init_Ex();
-		SDL_PollEvent(NULL);
-		SDL_Delay(5000);
+
+		AudioClip clip("Iron/preloader.mp3");
+		clip.m_Config.fast = true;
+		clip.Play();
+
+		float elapsed = 0;
+		while (elapsed <= 7) {
+			fps_timer.start_timer();
+
+			SDL_RenderClear(IronGL::m_Renderer);
+			spr.Render(cam);
+
+			if(elapsed <= 1)
+				trasnform2.position.y = Matloon::slerp(trasnform2.position.y, (float)config.height / 2 - (c.data.bounds.y * trasnform2.scale.y / 2), elapsed);
+
+			c.Render(cam);
+			SDL_RenderPresent(IronGL::m_Renderer);
+
+			fps_timer.end_timer();
+
+			elapsed += (float)fps_timer.elapsed_time()/1000;
+		}
+
+		clip.Stop();
 	}
 
 	template <typename T>
@@ -45,13 +66,12 @@ public:
 		game = std::make_unique<T>();
 	}
 
+	SDL_Event e;
+	char quit = false;
+	Timer fps_timer;
 	void Run()
 	{
-		Timer fps_timer;
 		Timer cap_timer;
-		
-		SDL_Event e;
-		char quit = false;
 
 		Game* gm = game.get();
 
