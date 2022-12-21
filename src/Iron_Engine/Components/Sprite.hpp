@@ -2,17 +2,10 @@
 
 #include <Iron_Engine\Core.hpp>
 #include <Iron_Engine/Utils/Camera.hpp>
+#include "Transform.hpp"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <string_view>
-
-typedef struct Transform
-{
-public:
-	glm::vec2 position = { 0,0 };
-	glm::vec2 scale = { 1,1 };
-	float rotation = 0.0f;
-}Transform;
 
 typedef struct SpriteData
 {

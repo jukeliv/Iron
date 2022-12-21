@@ -6,14 +6,14 @@
 #include <SDL_audio.h>
 #include <SDL_image.h>
 //MiniAudio
-#include "miniaudio.h"
+#include <Iron_Engine/vendor/miniaudio/miniaudio.h>
 
 #define CHANNELS    2               /* Setup Stereo Audio. */
 #define SAMPLE_RATE 48000
 //Dear ImGui
-#include <ImGui\imgui.h>
-#include <ImGui\imgui_impl_sdl.h>
-#include <ImGui\imgui_impl_sdlrenderer.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl.h>
+#include <imgui/imgui_impl_sdlrenderer.h>
 
 #include <iostream>
 #include <assert.h>

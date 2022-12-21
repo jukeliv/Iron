@@ -86,7 +86,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,7 +114,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,7 +151,7 @@
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <IncludeInUnityFile>false</IncludeInUnityFile>
       <CustomUnityFile>false</CustomUnityFile>
-      <PreprocessorDefinitions>DISTRIBUTION_BUILD;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DISTRIBUTION_BUILD;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,14 +164,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\ImGui\imgui.cpp" />
-    <ClCompile Include="include\ImGui\imgui_demo.cpp" />
-    <ClCompile Include="include\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="include\ImGui\imgui_impl_sdl.cpp" />
-    <ClCompile Include="include\ImGui\imgui_impl_sdlrenderer.cpp" />
-    <ClCompile Include="include\ImGui\imgui_tables.cpp" />
-    <ClCompile Include="include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_sdlrenderer.cpp" />
+    <ClCompile Include="include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Icon.cpp" />
+    <ClCompile Include="src\Iron_Engine\vendor\ini_rw\src\ini_rw.c" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +191,14 @@
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
-    <ClInclude Include="include\miniaudio.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_sdl.h" />
+    <ClInclude Include="include\imgui\imgui_impl_sdlrenderer.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL2\begin_code.h" />
     <ClInclude Include="include\SDL_assert.h" />
@@ -234,20 +242,14 @@
     <ClInclude Include="include\SDL_metal.h" />
     <ClInclude Include="include\SDL_misc.h" />
     <ClInclude Include="include\SDL_vulkan.h" />
+    <ClInclude Include="src\Iron_Engine\Components\Transform.hpp" />
+    <ClInclude Include="src\Iron_Engine\iniwrap.h" />
     <ClInclude Include="src\Iron_Engine\Utils\Camera.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\Animator.hpp" />
     <ClInclude Include="src\Iron_Engine\Components\AudioClip.hpp" />
     <ClInclude Include="src\Iron_Engine\Golden\RigidBody.hpp" />
     <ClInclude Include="src\Iron_Engine\Math\Matloon.hpp" />
     <ClInclude Include="include\SDL2\close_code.h" />
-    <ClInclude Include="include\ImGui\imconfig.h" />
-    <ClInclude Include="include\ImGui\imgui.h" />
-    <ClInclude Include="include\ImGui\imgui_impl_sdl.h" />
-    <ClInclude Include="include\ImGui\imgui_impl_sdlrenderer.h" />
-    <ClInclude Include="include\ImGui\imgui_internal.h" />
-    <ClInclude Include="include\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="include\ImGui\imstb_textedit.h" />
-    <ClInclude Include="include\ImGui\imstb_truetype.h" />
     <ClInclude Include="include\SDL2\SDL.h" />
     <ClInclude Include="include\SDL2\SDL_assert.h" />
     <ClInclude Include="include\SDL2\SDL_atomic.h" />
@@ -349,6 +351,8 @@
     <ClInclude Include="src\Iron_Engine\Components\Sprite.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\Time.hpp" />
     <ClInclude Include="src\Iron_Engine\Utils\Timer.hpp" />
+    <ClInclude Include="src\Iron_Engine\vendor\ini_rw\src\ini_rw.h" />
+    <ClInclude Include="src\Iron_Engine\vendor\miniaudio\miniaudio.h" />
     <ClInclude Include="src\MainGame.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <Iron_Engine/Math/Matloon.hpp>
 typedef struct CameraConfig
 {
