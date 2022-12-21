@@ -51,6 +51,7 @@ public:
 
 		if (ImGui::Button("Re-Build"))
 		{
+			IronGL::m_WindowConfiguration.writeToINI("./winConfig.ini");
 			IronGL::m_WindowConfiguration.UpdateWinTitle(IronGL::m_Window);
 			IronGL::m_WindowConfiguration.UpdateVsync(IronGL::m_Renderer);
 			IronGL::m_WindowConfiguration.UpdateWinWH(IronGL::m_Window);

@@ -2,7 +2,6 @@
 #define MA_NO_DEVICE_IO
 
 #include <Iron_Engine/Engine.hpp>
-#include <Iron_Engine/iniwrap.h>
 #include "MainGame.cpp"
 
 int SDL_main(int argc, char* argv[])
@@ -16,14 +15,10 @@ int SDL_main(int argc, char* argv[])
 	*/
 	Application app;
 
-	ini_t* ini;
-	iniwrap::loadINI(ini, "./winConfig.ini");
-
 	WinConfig config;
+
 	config.title = "slime";
-	
-	config.height = iniwrap::readValue<int>(ini, "WinConfig", "height");
-	config.width = iniwrap::readValue<int>(ini, "WinConfig", "width");
+	config.loadFromINI("./winConfig.ini");
 
 	app.Init(config);
 

@@ -36,10 +36,32 @@
 #define ERROR(x)
 #endif // !DISTRIBUTION_BUILD
 
+#include <Iron_Engine/iniwrap.h>
+
 //WINDOW VARIABLES
 typedef struct WinConfig
 {
 public:
+	void loadFromINI(std::string_view f)
+	{
+		ini_t* ini;
+		iniwrap::loadINI(ini, f.data());
+		height = iniwrap::readValue<int>(ini, "WinConfig", "height");
+		width = iniwrap::readValue<int>(ini, "WinConfig", "width");
+		vsync = iniwrap::readValue<bool>(ini, "WinConfig", "vsync");
+		fpsCap = iniwrap::readValue<int>(ini, "WinConfig", "fpsCap");
+	}
+
+	void writeToINI(std::string_view f)
+	{
+		ini_t* ini;
+		iniwrap::loadINI(ini, f.data());
+		iniwrap::writeValue<int>(ini, f.data(), "WinConfig", "height", height);
+		iniwrap::writeValue<int>(ini, f.data(), "WinConfig", "width", width);
+		iniwrap::writeValue<bool>(ini, f.data(), "WinConfig", "vsync", vsync);
+		iniwrap::writeValue<int>(ini, f.data(), "WinConfig", "fpsCap", fpsCap);
+	}
+
 	void CreateWin(SDL_Window*& win)
 	{
 		win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
