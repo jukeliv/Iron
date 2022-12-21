@@ -1,0 +1,9 @@
+[submodule "src/Iron_Engine/vendor/ini_rw"]
+	path = src/Iron_Engine/vendor/ini_rw
+	url = https://github.com/nightmareci/ini_rw.git
+[submodule "src/Iron_Engine/vendor/miniaudio"]
+	path = src/Iron_Engine/vendor/miniaudio
+	url = https://github.com/mackron/miniaudio.git
+[submodule "src/Iron_Engine/vendor/glm"]
+	path = src/Iron_Engine/vendor/glm
+	url = https://github.com/g-truc/glm.git

@@ -1,17 +1,11 @@
 #pragma once
 
 #include <Iron_Engine\Core.hpp>
+#include <Iron_Engine/Utils/Camera.hpp>
+#include "Transform.hpp"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <string_view>
-
-typedef struct Transform
-{
-public:
-	glm::vec2 position = { 0,0 };
-	glm::vec2 scale = { 1,1 };
-	float rotation;
-}Transform;
 
 typedef struct SpriteData
 {
@@ -24,8 +18,8 @@ public:
 class Sprite
 {
 public:
-	Sprite(std::string_view path)
-		: m_Tex(load(path.data()))
+	Sprite(Transform& _transform, std::string_view path)
+		: m_Tex(load(path.data())), transform(_transform)
 	{
 	}
 
@@ -35,30 +29,41 @@ public:
 		m_Tex = nullptr;
 	}
 
-	void Render()
+	void Render(Camera& camera)
 	{
-		clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
+		clip = data.clip.w || data.clip.h ? &data.clip : NULL;
 
-		data.clip.w = data.clip.w == 0? data.bounds.x : data.clip.w;
-		data.clip.h = data.clip.h == 0 ? data.bounds.y : data.clip.h;
+		data.clip.w = data.clip.w? data.clip.w : data.bounds.x;
+		data.clip.h = data.clip.h? data.clip.h : data.bounds.y;
+		
+		glm::vec2 translate = camera.TranslatePosition(transform.position);
 
 		SDL_Rect renderQuad =
-		{   transform.position.x, transform.position.y, 
-			data.clip.w, data.clip.h };
+		{   translate.x , translate.y,
+		data.clip.w, data.clip.h };
 		
-		renderQuad.w *= transform.scale.x;
-		renderQuad.h *= transform.scale.y;
+		renderQuad.w *= (float)transform.scale.x * camera.getScale();
+		renderQuad.h *= (float)transform.scale.y * camera.getScale();
 
-		SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
+		// Check if the texture is out of the screen
+		culling = (renderQuad.x - renderQuad.w > IronGL::m_WindowConfiguration.width || renderQuad.x + renderQuad.w < 0) || (renderQuad.y - renderQuad.h > IronGL::m_WindowConfiguration.height || renderQuad.y + renderQuad.h < 0);
+
+		// Draw texture onto the screen if it is not out of bounds
+		if (!culling)
+		{
+			clip = data.clip.w != 0 || data.clip.h != 0 ? &data.clip : NULL;
+			SDL_RenderCopyEx(IronGL::m_Renderer, m_Tex, clip, &renderQuad, transform.rotation, NULL, data.flip);
+		}
 	}
 
 	inline void ScreenCenter()
 	{
-		transform.position = { (float)WINDOW_WIDTH / 2 - (data.bounds.x * transform.scale.x / 2), (float)WINDOW_HEIGHT / 2 - (data.bounds.y * transform.scale.y / 2) };
+		transform.position = { (float)IronGL::m_WindowConfiguration.width / 2 - (data.bounds.x * transform.scale.x / 2), (float)IronGL::m_WindowConfiguration.height / 2 - (data.bounds.y * transform.scale.y / 2) };
 	}
 public:
-	Transform transform;
+	Transform& transform;
 	SpriteData data;
+	bool culling;
 private:
 	SDL_Texture* m_Tex;
 	SDL_Rect* clip = NULL;

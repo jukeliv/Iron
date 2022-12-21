@@ -1,21 +1,22 @@
 #pragma once
 
-namespace Golden
+namespace Golden::Ziffy
 {
 	//Physics functions and constants
-	class Ziffy
+	class ZiffyFunc
 	{
 	public:
-		#define GRAVITY 9.81f
+		#define G 9.81f
 
-		inline static float cal_mass(float weight)
+		inline static float cal_weight(float mass)
 		{
-			return weight * GRAVITY;
+			return mass * G;
 		}
 
-		inline static glm::vec2 cal_velocity(glm::vec2 in, float weight, const float& delta)
+		inline static glm::vec2 cal_force(glm::vec2 acc, float mass)
 		{
-			return in * cal_mass(weight) * delta;
+			//F = M*A
+			return mass * acc;
 		}
 	};
 }

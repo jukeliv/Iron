@@ -21,6 +21,7 @@ namespace Golden
 
 			//Axis-Aligned Bounding Boxes
 			if (ct == ColliderType::SquareCollider) {
+				//TODO: Center the collision so it is not on the corner of the sprite
 				return (other.bounds.position.x < bounds.position.x + bounds.scale.x &&
 					other.bounds.position.x + other.bounds.scale.x > bounds.position.x &&
 					other.bounds.position.y < bounds.position.y + bounds.scale.y &&

@@ -1,97 +1,71 @@
 #pragma once
-//TODO: ReWrite this class with another Audio Library/Framework
-/*
+
 #include <Iron_Engine\Core.hpp>
-
 #include <string_view>
-
-enum class AudioData { IRON_MUSIC, IRON_SFX };
 
 typedef struct AudioConfig
 {
 public:
-	AudioConfig(bool _loop, bool _force)
-		:loop(_loop), force(_force)
-	{
-
-	}
-public:
-	bool loop = false;
-	bool force = false;
+	/*on enabled, performance gets better, but memory usage increase
+	* if your file is large and/or its only played ones, enable this
+	* if it is small and/or it's used many times, let it as it is right now
+	*/
+	char fast = false;
+	//enables playing the song again when it ends
+	char loop = false;
+	//value goes from -1 to 1
+	float panning = 0.0f;
+	//value goes from 0 to 1
+	float volume = 1.0f;
+	//this affects speed too
+	float pitch = 1.0f;
 }AudioConfig;
 
 class AudioClip
 {
 public:
-	AudioClip(std::string_view path, AudioData data = AudioData::IRON_SFX)
-		:m_Data(data)
+	AudioClip(std::string_view path)
 	{
-		if (m_Data == AudioData::IRON_MUSIC) {
-			m_MusicClip = Mix_LoadMUS(path.data());
+		ma_uint32 flags = m_Config.fast ? MA_SOUND_FLAG_DECODE : MA_SOUND_FLAG_STREAM;
+		ma_result result = ma_sound_init_from_file(&IronGL::g_Engine, path.data(), flags, NULL, NULL, &m_Sound);
 
-			if (!m_MusicClip)
-			{
-				ERROR("Failed to load music!");
-				ERROR(path.data());
-				ERROR("SDL_MIXER ERROR: ");
-				ERROR(Mix_GetError());
-
-				exit(-1);
-			}
-		}
-		else
-		{
-			m_AudioClip = Mix_LoadWAV(path.data());
-
-			if (!m_AudioClip)
-			{
-				ERROR("Failed to load music!");
-				ERROR(path.data());
-				ERROR("SDL_MIXER ERROR: ");
-				ERROR(Mix_GetError());
-
-				exit(-1);
-			}
+		if (result != MA_SUCCESS) {
+			ERROR("Failed to initialize sound.");
+			ERROR(path.data());
+			exit(-1);
 		}
 	}
 
-	inline void Play(AudioConfig* configuration = NULL)
+	void Play()
 	{
-		if (m_Data == AudioData::IRON_MUSIC)
-		{
-			if (Mix_PlayingMusic() == 0 || configuration->force)
-			{
-				Mix_PlayMusic(m_MusicClip, configuration->loop?-1:0);
-			}
-		}
-		else
-		{
-			Mix_PlayChannel(-1, m_AudioClip, configuration->loop ?-1:0);
-		}
+		step();
+
+		ma_sound_set_looping(&m_Sound, m_Config.loop);
+
+		ma_sound_start(&m_Sound);
 	}
 
-	//The volume goes from 0.0 to 1.0
-	inline void SetVolume(double v)
+	void Stop()
 	{
-		uint32_t volume = std::ceil(powf(v, 2) * MIX_MAX_VOLUME);
+		ma_sound_stop(&m_Sound);
+	}
 
-		if (m_Data == AudioData::IRON_MUSIC)
-			Mix_VolumeMusic(volume);
-		else
-			Mix_VolumeChunk(m_AudioClip, volume);
+	void step()
+	{
+		ma_sound_set_position(&m_Sound, m_Config.panning, 0.0f, 0.0f);
+
+
+		ma_sound_set_volume(&m_Sound, powf(m_Config.volume, 2));
+
+		ma_sound_set_pitch(&m_Sound, m_Config.pitch);
 	}
 
 	~AudioClip()
 	{
-		Mix_FreeMusic(m_MusicClip);
-		m_MusicClip = nullptr;
-
-		Mix_FreeChunk(m_AudioClip);
-		m_AudioClip = nullptr;
+		ma_sound_uninit(&m_Sound);
 	}
+public:
+	AudioConfig m_Config;
 private:
-	AudioData& m_Data;
-
-	Mix_Music* m_MusicClip = nullptr;
-	Mix_Chunk* m_AudioClip = nullptr;
-};*/
+	ma_sound m_Sound;
+};
